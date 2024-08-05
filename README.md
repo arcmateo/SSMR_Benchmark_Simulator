@@ -1,1 +1,1 @@
-# ESR_model_reduction
+# ESR model reduction
