@@ -1,0 +1,102 @@
+function g = SS_function(~,x)
+   
+    % PARAMETERS ----------
+    % Order of reactions: [dehydrogenation, decomposition, WGSR, reforming]
+    % Order of species: [C2H5OH, H2O, CH4, H2, CO, CO2, CH3CHO]
+
+    R = 8.31432; % [J/(mol-K)] Gas universal constant
+
+    Patm = 101325; % [Pa] Atmosferic pressure
+
+    P0 = 4*Patm; % [Pa] Inlet pressure
+
+    P_bar = P0/Patm; % [bar] Constant pressure assumed along the reactor
+    
+    T0 = 873.15; % [K] Inlet temperature
+    
+    Tref = 773.15; % [K] Reference temperature
+    
+    T_a = T0; % [K] Furnace temperature
+    
+    Ea = [7.0e3, 1.3e4, 7.0e3, 8.9e3]; % [J/mol] Activation energy
+    
+    kinf = [2.1e4, 2.0e3, 1.9e4, 2.0e5]; % [mol/(m3-min-bar)] 
+    % Pre-exponential factor
+    
+    deltaH_std = [64600, 49875, -41166, 109136]; % [J/mol] 
+    % Standard enthalpy of reactions
+
+    Cp = [131.9, 31.1, 57.5, 21.1, 23.8, 43.9, 96.1]; % [J/(mol-K)]
+    % Molar heat capacities at constant pressure (taken at ~850 K)
+
+    U = (25)*60; % [J /(m2-min-K)] Heat transfer coefficient
+
+    d = 22e-3; % [m] Reactor diameter
+
+    A = pi*((d^2)/4); % [m2] Reactor cross-sectional area
+    
+    a = 4/d; % [m2/m3] % area per reactor volume for heat transfer
+
+    ns = 7; % Number of species
+
+    nr = 4; % Number of reactions
+      
+    % Enthalpy of reactions at ~850 K
+    deltaCp_rxn1 = (1/1)*Cp(4) + (1/1)*Cp(7) - (1)*Cp(1);
+    deltaCp_rxn2 = (1/1)*Cp(4) + (1/1)*Cp(3) + (1/1)*Cp(5) - (1)*Cp(1);
+    deltaCp_rxn3 = (1/1)*Cp(4) + (1/1)*Cp(6) - (1/1)*Cp(2) - (1)*Cp(5);
+    deltaCp_rxn4 = (5/1)*Cp(4) + (2/1)*Cp(6) - (3/1)*Cp(2) - (1)*Cp(7);
+    deltaCp = [deltaCp_rxn1, deltaCp_rxn2, deltaCp_rxn3, deltaCp_rxn4];
+    deltaH = zeros(1, nr);
+    for i = 1:nr
+       deltaH(i) = deltaH_std(i) + deltaCp(i)*(850-298); % [J/mol] 
+       % deltaH = deltaH_std + deltaCp*(T-Tref)
+    end
+
+
+    % CALCULATION ----------
+
+    g = zeros(ns+1, 1); % Initialization of the function output
+       
+    % Reactions    R1 R2 R3 R4     Stoichiometric matrix           
+    stoich_mat = [-1, -1, 0,  0;...  % C2H5OH
+                          0,  0, -1, -3;... % H2O,
+                          0,  1,  0,  0;...  % CH4
+                          1,  1,  1,  5;...  %  H2,
+                          0,  1, -1,  0;...  % CO
+                          0,  0,  1,  2;...  % CO2
+                          1,  0,  0, -1];  %  CH3CHO
+    
+    F = x(1:ns);  % Positions in vector x for molar flow rates 
+    T = x(ns+1); % Position in vector x for temperature
+    sumF = sum(F); % Total molar flow rate [mol/min]
+    
+    kreact = zeros(nr, 1);  % Kinetic parameters calculation
+    for i = 1:nr
+        kreact(i) = kinf(i) * exp(-Ea(i) * (1/(R*T) - 1/(R*Tref)));
+    end
+	kWGS = exp(4577.8 / T - 4.33);
+   
+   % Reaction rates determination
+   r = zeros(nr, 1);
+   Fratio_C2H5OH = F(1)/sumF; % Molar fractions
+  	Fratio_H2O = F(2)/sumF;
+   Fratio_H2 = F(4)/sumF;
+   Fratio_CO = F(5)/sumF;
+ 	Fratio_CO2 = F(6)/sumF;
+ 	Fratio_CH3CHO = F(7)/sumF;
+
+   r(1) = kreact(1)*(P_bar*Fratio_C2H5OH); 
+   r(2) = kreact(2)*(P_bar*Fratio_C2H5OH);
+   r(3) = kreact(3)*((P_bar*Fratio_CO) *(P_bar*Fratio_H2O) - ...
+                ((P_bar*Fratio_CO2)*(P_bar*Fratio_H2))/kWGS);
+ 	r(4) = kreact(4)*(P_bar*Fratio_CH3CHO)*(P_bar*Fratio_H2O)^3;
+            
+   g(1:ns) = A*stoich_mat*r;  % Steady-state mass balance
+    
+   sumdFdz = sum(g(1:ns)); 
+   sum3 = deltaH*r + sum(stoich_mat*r)*(-R*T);
+   g(ns+1) = (U*a*(T_a-T)-((1/A)*R*T*sumdFdz)-sum3)/((1/A)*(Cp*F)); 
+   % Steady-state energy balance
+
+end
