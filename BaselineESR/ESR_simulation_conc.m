@@ -1,5 +1,5 @@
 % Ethanol Steam Reformer (with finite differences)
-% Model in terms of Concentrations
+% Model in terms of Concentrationsss
 
 clear; close all; clc;
 
