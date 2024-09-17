@@ -6,7 +6,7 @@ clear; close all; clc;
 % PARAMETERS ---------- 
 % Same as in SS_function.m
 
-np = 600; % Number of points (spatial discretization)
+np = 200; % Number of points (spatial discretization)
 
 % Load initial conditions
 ss_filename = ['SS_files\SS_u_1_np_', num2str(np),'.mat'];

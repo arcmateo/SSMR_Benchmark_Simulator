@@ -6,7 +6,7 @@ clear; close all; clc;
 % Same as in SS_function.m
 factor = 1;
 
-np = 600; % Number of points (spatial discretization)
+np = 200; % Number of points (spatial discretization)
 
 T0 = 873.15; % [K] Inlet temperature
 

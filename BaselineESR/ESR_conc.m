@@ -4,6 +4,8 @@ function dxdt = ESR_conc(t,x,u)
     % Order of reactions: [dehydrogenation, decomposition, WGSR, reforming]
     % Order of species: [C2H5OH, H2O, CH4, H2, CO, CO2, CH3CHO]
 
+    np = 200; % Number of points (spatial discretization)
+
     R = 8.31432; % [J/(mol-K)] Gas universal constant
 
     Patm = 101325; % [Pa] Atmosferic pressure
@@ -35,8 +37,6 @@ function dxdt = ESR_conc(t,x,u)
     ns = 7; % Number of species
 
     nr = 4; % Number of reactions
-
-    np = 600; % Number of points (spatial discretization)
 
     L = 0.23; % [m] Reactor length
 

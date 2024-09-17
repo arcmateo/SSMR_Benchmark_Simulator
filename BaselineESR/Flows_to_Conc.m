@@ -5,7 +5,7 @@ function xc = Flows_to_Conc(xf)
 
 % PARAMETERS ----------
 
-np = 600; % Number of points (spatial discretization)
+np = 200; % Number of points (spatial discretization)
 
 R = 8.31432; % [J/(mol-K)] Gas universal constant
 

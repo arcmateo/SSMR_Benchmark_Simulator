@@ -4,7 +4,7 @@ function f = ESR_flows(t,x,u)
     % Order of reactions: [dehydrogenation, decomposition, WGSR, reforming]
     % Order of species: [C2H5OH, H2O, CH4, H2, CO, CO2, CH3CHO]
 
-    np = 600; % Number of points (spatial discretization)
+    np = 200; % Number of points (spatial discretization)
 
     R = 8.31432; % [J/(mol-K)] Gas universal constant
 
