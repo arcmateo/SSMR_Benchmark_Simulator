@@ -1,42 +1,6 @@
 function g = SS_function(~,x)
     
-    % PARAMETERS ----------
-    % Order of reactions: [dehydrogenation, decomposition, WGSR, reforming]
-    % Order of species: [C2H5OH, H2O, CH4, H2, CO, CO2, CH3CHO]
-
-    R = 8.31432; % [J/(mol-K)] Gas universal constant
-
-    Patm = 101325; % [Pa] Atmosferic pressure
-
-    P0 = 4*Patm; % [Pa] Inlet pressure
-
-    P_bar = P0/Patm; % [bar] Constant pressure assumed along the reactor
-    
-    T0 = 873.15; % [K] Inlet temperature
-    
-    Tref = 773.15; % [K] Reference temperature
-    
-    T_a = T0; % [K] Furnace temperature
-    
-    Ea = [7.0e4, 1.30e5, 7.0e4, 9.8e4]; % [J/mol] Activation energy
-    
-    kinf = [2.1e4, 2.0e3, 1.9e4, 2.0e5]; % [mol/(m3-min-bar)]
-    % Pre-exponential factor
-    
-    deltaH_std = [64600, 49875, -41166, 109136]; % [J/mol] 
-    % Standard enthalpy of reactions
-
-    U = (25)*60; % [J /(m2-min-K)] Heat transfer coefficient
-
-    d = 22e-3; % [m] Reactor diameter
-
-    A = pi*((d^2)/4); % [m2] Reactor cross-sectional area
-    
-    a = 4/d; % [m2/m3] % area per reactor volume for heat transfer
-
-    ns = 7; % Number of species
-
-    nr = 4; % Number of reactions
+    Parameters % Load the parameters
 
     % CALCULATION ----------
 

@@ -3,17 +3,7 @@ function xc = Flows_to_Conc(xf)
 %  xf: vector of flows 
 %  xc: vector of concentrations 
 
-% PARAMETERS ----------
-
-np = 200; % Number of points (spatial discretization)
-
-R = 8.31432; % [J/(mol-K)] Gas universal constant
-
-Patm = 101325; % [Pa] Atmosferic pressure
-
-P0 = 4*Patm; % [Pa] Inlet pressure
-
-ns = 7; % Number of species
+Parameters % Load the parameters
 
 xc = zeros(1,np*(ns+1)); % initialize the vector of concentrations and temperature
 

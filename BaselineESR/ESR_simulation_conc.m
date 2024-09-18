@@ -3,15 +3,12 @@
 
 clear; close all; clc;
 
-% PARAMETERS ---------- 
-% Same as in SS_function.m
-
-np = 200; % Number of points (spatial discretization)
+Parameters % Load the parameters
 
 % Load initial conditions
-ss_filename = ['SS_files\SS_u_1_np_', num2str(np),'.mat'];
+ss_filename = ['SS_files3\SS_u_1_np_',num2str(np),'.mat'];
 load(ss_filename);
-x0_1c = Flows_to_Conc(x0_1);
+%x0_1c = Flows_to_Conc(x0_1);
 % Transforms initial conditions from Flows to Concentrations
 
 options = odeset('RelTol', 1e-4,'AbsTol', 1e-5,'MaxStep', 1,...
@@ -22,7 +19,7 @@ options = odeset('RelTol', 1e-4,'AbsTol', 1e-5,'MaxStep', 1,...
 t_interv = [0 1]; % [min] Simulation time
 
 tic
-[t1,x1] = ode15s(@(t,x)ESR_conc(t,x,u_ss), t_interv, x0_1c, options);
+[t1,x1] = ode15s(@(t,x)ESR_conc(t,x,u_ss), t_interv, x0_1, options);
 toc
 
 disp("First stage done")
@@ -40,5 +37,3 @@ title('Hydrogen concentration at the reactor outlet')
 ylabel('Concentration [mol/m3]')
 xlabel('Time [min]')
 grid on
-
-

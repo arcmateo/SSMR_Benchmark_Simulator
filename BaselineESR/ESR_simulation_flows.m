@@ -3,13 +3,10 @@
 
 clear; close all; clc;
 
-% PARAMETERS ---------- 
-% Same as in SS_function.m
-
-np = 200; % Number of points (spatial discretization)
+Parameters % Load the parameters
 
 % Load initial conditions
-ss_filename = ['SS_files\SS_u_1_np_', num2str(np),'.mat'];
+ss_filename = ['SS_files2\SS_u_1_np_', num2str(np),'.mat'];
 load(ss_filename);
 
 options = odeset('RelTol', 1e-4,'AbsTol', 1e-5, ...
@@ -32,11 +29,11 @@ ylabel('Molar flow [mol/min]')
 xlabel('Position')
 grid on
 
+
 figure(2)
-plot(t1, x1(:,4*np), linewidth=2)
+plot(t1, x1(:,8*np), linewidth=2)
 title('Hydrogen molar flow at the reactor outlet')
 ylabel('Molar flow [mol/min]')
 xlabel('Time [min]')
+%ytickformat('%,.4f')
 grid on
-
-
