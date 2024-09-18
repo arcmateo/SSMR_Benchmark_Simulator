@@ -29,7 +29,6 @@ ylabel('Molar flow [mol/min]')
 xlabel('Position')
 grid on
 
-
 figure(2)
 plot(t1, x1(:,4*np), linewidth=2)
 title('Hydrogen molar flow at the reactor outlet')
