@@ -31,9 +31,8 @@ grid on
 
 
 figure(2)
-plot(t1, x1(:,8*np), linewidth=2)
+plot(t1, x1(:,4*np), linewidth=2)
 title('Hydrogen molar flow at the reactor outlet')
 ylabel('Molar flow [mol/min]')
 xlabel('Time [min]')
-%ytickformat('%,.4f')
 grid on
