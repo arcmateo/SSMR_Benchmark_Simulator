@@ -1,11 +1,11 @@
-function f = ESR_flows(t,x,u)
+function f = ESR_flows1stg(t,x,u)
 
     Parameters % Load the parameters
 
     % Input change (simulates a manipulation)
-    if t > 0.5
-       u(1) = 0.0021;
-    end
+    %if t > 0.5
+    %   u(1) = 0.0021;
+    %end
 
     F_in = [u(1), u(2), zeros(1,ns-2)]; % [mol/min] Vector of inlet molar flow rates
     T_in = T0; % [K] Inlet temperature

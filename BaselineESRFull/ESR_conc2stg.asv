@@ -1,25 +1,13 @@
-function dxdt = ESR_conc(t,x,u)
+function dxdt = ESR_conc2stg(t,x,x_boundary,F_in)
 
     Parameters % Load the parameters
    
-    % Input change (simulates a manipulation)
-    if t > 0.5
-       u(1) = 0.0021;
-    end
+    % CALCULATION
 
-    F_in = [u(1), u(2), zeros(1,ns-2)]; % [mol/min] Vector of inlet molar flow rates
-    T_in = T0; % [K] Inlet temperature
-    C_in = ((F_in/sum(F_in))/(R*T_in))*P0; % [mol/m3] Vector of inlet Concentrations
+    C_in = x_boundary(1:ns); % [mol/m3] Vector of inlet Concentrations
+    T_in = x_boundary(ns+1); % [K] Inlet temperature
+
     v_in = ((R*T_in)/(A*P0))*sum(F_in); % [m/min] Inlet velocity
-
-    % Reactions    R1 R2 R3 R4     Stoichiometric matrix           
-    stoich_mat = [-1, -1, 0,  0;...  % C2H5OH
-                          0,  0, -1, -3;... % H2O,
-                          0,  1,  0,  0;...  % CH4
-                          1,  1,  1,  5;...  %  H2,
-                          0,  1, -1,  0;...  % CO
-                          0,  0,  1,  2;...  % CO2
-                          1,  0,  0, -1];  %  CH3CHO
 
     v_k_0 = 0; % velocity must be initialized to something to record v_k_1 for k > 1
 
@@ -29,31 +17,15 @@ function dxdt = ESR_conc(t,x,u)
        C_k = x(k:np:ns*np); % Vector of conc. of each species at point k
        index3 = ns*np + k; % Index for the temperature at point k
        T_k = x(index3); % Temperature at point k
-       
-       kreact_k = zeros(nr, 1); % vector of kinetics parameters
-       for i = 1:nr
-           kreact_k(i) = kinf(i)*exp(-Ea(i)*(1/(R*T_k)-1/(R*Tref)));
-       end
-       kWGS_k = exp((4577.8/T_k) - 4.33);
-       
-       r_k = zeros(nr, 1); % Reaction rates at point k
 
-       % Partial pressure of each especies in [bar]
-       P_C2H5OH = (C_k(1)*R*T_k)/Patm;
-       P_H2O = (C_k(2)*R*T_k)/Patm;
-       % Partial pressure of methane is not required
-       P_H2 = (C_k(4)*R*T_k)/Patm;
-       P_CO = (C_k(5)*R*T_k)/Patm;
-       P_CO2 = (C_k(6)*R*T_k)/Patm;
-       P_CH3CHO = (C_k(7)*R*T_k)/Patm;
-   
-       r_k(1) = kreact_k(1)*(P_C2H5OH); 
-       r_k(2) = kreact_k(2)*(P_C2H5OH); 
-       r_k(3) = kreact_k(3)*(P_CO*P_H2O - ((P_CO2*P_H2)/kWGS_k));
-       r_k(4) = kreact_k(4)*P_CH3CHO*P_H2O^3;
+       pe_k = pe0 * exp(-Eam/(R*T_k)); % [mol/m min Pa^(1/2)]
+       P_H2_k = C_k(4)*R*T_k; % [Pa]
        
-       molarity_change = r_k(1) + 2*r_k(2) + 3*r_k(4);
-   
+       F_H2_perm_k = pe_k*((pi*Dm*deltaz2)/deltam)*...
+           (sqrt(P_H2_k)-sqrt(Patm)); % [mol/min]
+       
+       F_H2_perm_k_vol = (F_H2_perm_k)/
+
        if k == 1
            Ftot_k = sum(F_in) + A*molarity_change*deltaz1;
        else
