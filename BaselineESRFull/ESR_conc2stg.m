@@ -64,6 +64,9 @@ function dxdt = ESR_conc2stg(t,x,x_boundary,F_in)
        Cp_CH3CHO =2.4528e1 + 7.6013e-2*T_k + 1.3625e-4*T_k^2 - 1.9994e-7*T_k^3 + 7.5955e-11*T_k^4;
        Cp = [Cp_C2H5OH, Cp_H2O, Cp_CH4, Cp_H2, Cp_CO, Cp_CO2, Cp_CH3CHO]; 
        Cv = Cp - R;
+
+       % Molar internal energy of Hydrogen
+       U_H2 = Cv(4)*(T_k - 0);
   
        % Computing dTdt
    
@@ -72,7 +75,8 @@ function dxdt = ESR_conc2stg(t,x,x_boundary,F_in)
        else
            dTdz_k = (x(index3) - x(index3 - 1)) / deltaz1;
        end  
-       dxdt(index3) = (U*a*(T_a-T_k) - (Cp*C_k) * v_k_0*dTdz_k) / (Cv*C_k);    
+       dxdt(index3) = (U*a*(T_a-T_k) - (Cp*C_k)*v_k_0*dTdz_k...
+           - F_H2_perm_k_vol*U_H2) / (Cv*C_k);    
    end
 
 end
