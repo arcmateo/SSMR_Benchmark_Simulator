@@ -6,7 +6,7 @@ Parameters % Load the parameters
 
 factor = 1;
 
-u_ss = [0.0000; 0.0099]; % [mol/min] steady-state inputs
+u_ss = [0.0021; 0.0099]; % [mol/min] steady-state inputs
 % order: [C2H5OH, H2O]
 
 % SIMULATION of SS for the 1st stage 

@@ -1,9 +1,13 @@
-function xc = Flows_to_Conc(xf)
+function xc = Flows_to_Conc(xf,p)
 % Transforms flows to concentrations as a ROW VECTOR
 %  xf: vector of flows 
 %  xc: vector of concentrations 
 
-Parameters % Load the parameters
+np = p.np; % Number of points (spatial discretization)
+ns = p.ns; % Number of species
+R = p.R; % [J/(mol-K)] Gas universal constant
+P0 = p.P0; % [Pa] Inlet pressure
+
 
 xc = zeros(1,np*(ns+1)); % initialize the vector of concentrations and temperature
 
