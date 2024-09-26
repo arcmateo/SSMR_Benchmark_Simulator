@@ -1,8 +1,7 @@
-function dxdt = ESR_conc1stg(t,x,u)
+function dxdt = ESR_conc1stg(t,x,u,p)
 
     global F_out
 
-    p = Parameters(); % Load the parameters 
     np = p.np; % Number of points (spatial discretization)
     R = p.R; % [J/(mol-K)] Gas universal constant    
     Patm =p.Patm; % [Pa] Atmosferic pressure    

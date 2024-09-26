@@ -17,7 +17,7 @@ options = odeset('RelTol', 1e-4,'AbsTol', 1e-5, ...
 t_interv = [0 1]; % [min] Simulation time
 
 tic
-[t1,x1] = ode15s(@(t,x)ESR_flows1stg(t,x,u_ss), t_interv, x0_1, options);
+[t1,x1] = ode15s(@(t,x)ESR_flows1stg(t,x,u_ss,p), t_interv, x0_1, options);
 toc
 disp("First stage done")
 
@@ -25,7 +25,7 @@ disp("First stage done")
 x_boundary = x1(:,np:np:end);
 
 tic
-[t2,x2] = ode15s(@(t,x)ESR_flows2stg(t,x,x_boundary_interp(x_boundary,t1,t)'),...
+[t2,x2] = ode15s(@(t,x)ESR_flows2stg(t,x,x_boundary_interp(x_boundary,t1,t)',p),...
     t_interv, x0_2, options);
 toc
 disp("Second stage done")

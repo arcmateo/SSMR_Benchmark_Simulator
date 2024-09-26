@@ -9,7 +9,7 @@ np = p.np; % Number of points (spatial discretization)
 % Load initial conditions
 ss_filename = ['SS_files3\SS_u_1_np_',num2str(np),'.mat'];
 load(ss_filename);
-x0_2c = Flows_to_Conc(x0_2);
+x0_2c = Flows_to_Conc(x0_2,p);
 % Transforms initial conditions from Flows to Concentrations
 
 options = odeset('RelTol', 1e-4,'AbsTol', 1e-5,'MaxStep', 1,...
@@ -20,7 +20,7 @@ options = odeset('RelTol', 1e-4,'AbsTol', 1e-5,'MaxStep', 1,...
 t_interv = [0 1]; % [min] Simulation time
 
 tic
-[t1,x1] = ode15s(@(t,x)ESR_conc1stg(t,x,u_ss), t_interv, x0_1c, options);
+[t1,x1] = ode15s(@(t,x)ESR_conc1stg(t,x,u_ss,p), t_interv, x0_1c, options);
 toc
 
 disp("First stage done")
@@ -30,7 +30,7 @@ disp("First stage done")
 x_boundary = x1(:,np:np:end);
 
 tic
-[t2,x2] = ode15s(@(t,x)ESR_conc2stg(t,x,x_boundary_interp(x_boundary,t1,t)',F_out),...
+[t2,x2] = ode15s(@(t,x)ESR_conc2stg(t,x,x_boundary_interp(x_boundary,t1,t)',p,F_out),...
     t_interv, x0_2c, options);
 toc
 disp("Second stage done")

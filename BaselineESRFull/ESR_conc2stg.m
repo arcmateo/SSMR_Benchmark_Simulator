@@ -1,4 +1,4 @@
-function dxdt = ESR_conc2stg(~,x,x_boundary,F_in)
+function dxdt = ESR_conc2stg(~,x,x_boundary,p,F_in)
 
     p = Parameters(); % Load the parameters 
     np = p.np; % Number of points (spatial discretization)

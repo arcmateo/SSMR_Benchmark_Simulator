@@ -22,7 +22,7 @@ x_ss_1 = [u_ss; zeros(ns-2,1); T0]; % Set boundary conditions (k = 0)
 options = odeset('MaxStep', 1, 'NonNegative', 1:8); % Options for the Solver
 
 tic
-[z1,x0_1] = ode15s(@(z,x)SS_function1stg(z,x), (0:deltaz1:L1), x_ss_1, options);
+[z1,x0_1] = ode15s(@(z,x)SS_function1stg(z,x,p), (0:deltaz1:L1), x_ss_1, options);
 toc
 
 x0_1 = x0_1(2:end,:); % (without z = 0)
@@ -34,7 +34,7 @@ x_ss_2 = x0_1(np:np:end); % Set boundary conditions (k = np)
 % End of first stage
 
 tic
-[z2,x0_2] = ode15s(@(z,x)SS_function2stg(z,x), (0:deltaz2:L2), x_ss_2, options);
+[z2,x0_2] = ode15s(@(z,x)SS_function2stg(z,x,p), (0:deltaz2:L2), x_ss_2, options);
 toc
 
 x0_2 = x0_2(2:end,:); % (without z = 0 of second stage))

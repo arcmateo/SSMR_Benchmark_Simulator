@@ -1,6 +1,5 @@
-function f = ESR_flows1stg(t,x,u)
+function f = ESR_flows1stg(t,x,u,p)
 
-    p = Parameters(); % Load the parameters 
     np = p.np; % Number of points (spatial discretization)
     R = p.R; % [J/(mol-K)] Gas universal constant 
     Patm =p.Patm; % [Pa] Atmosferic pressure

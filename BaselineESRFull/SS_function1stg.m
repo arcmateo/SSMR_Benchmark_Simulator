@@ -1,6 +1,5 @@
-function g = SS_function1stg(~,x)
+function g = SS_function1stg(~,x,p)
     
-    p = Parameters(); % Load the parameters
     R = p.R; % [J/(mol-K)] Gas universal constant
     P_bar = p.P_bar; % [bar] Constant pressure assumed along the reactor        
     Tref = p.Tref; % [K] Reference temperature    

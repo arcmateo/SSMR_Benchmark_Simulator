@@ -1,6 +1,5 @@
-function g = SS_function2stg(~,x)
-
-    p = Parameters(); % Load the parameters   
+function g = SS_function2stg(~,x,p)
+ 
     R = p.R; % [J/(mol-K)] Gas universal constant
     Patm =p.Patm; % [Pa] Atmosferic pressure
     P0 = p.P0; % [Pa] Inlet pressure    
