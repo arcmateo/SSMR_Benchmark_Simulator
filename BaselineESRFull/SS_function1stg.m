@@ -1,6 +1,21 @@
 function g = SS_function1stg(~,x)
     
-    Parameters % Load the parameters
+    p = Parameters(); % Load the parameters
+    R = p.R; % [J/(mol-K)] Gas universal constant
+    P_bar = p.P_bar; % [bar] Constant pressure assumed along the reactor        
+    Tref = p.Tref; % [K] Reference temperature    
+    T_a = p.T_a; % [K] Furnace temperature   
+    Ea = p.Ea; % [J/mol] Activation energy   
+    kinf = p.kinf; % [mol/(m3-min-bar)]
+    % Pre-exponential factor   
+    deltaH_std = p.deltaH_std; % [J/mol] 
+    % Standard enthalpy of reactions
+    U = p.U; % [J /(m2-min-K)] Heat transfer coefficient 
+    A = p.A; % [m2] Reactor cross-sectional area
+    a = p.a; % [m2/m3] % area per reactor volume for heat transfer  
+    ns = p.ns; % Number of species
+    nr = p.nr; % Number of reactions
+
 
     % CALCULATION ----------
 

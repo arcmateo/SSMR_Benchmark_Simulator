@@ -1,9 +1,9 @@
 % Ethanol Steam Reformer (with finite differences)
 % Model in terms of Concentrations
-
 clear; close all; clc;
 
-Parameters % Load the parameters
+p = Parameters(); % Load the parameters 
+np = p.np; % Number of points (spatial discretization)
 
 % Load initial conditions
 ss_filename = ['SS_files2\SS_u_1_np_', num2str(np),'.mat'];

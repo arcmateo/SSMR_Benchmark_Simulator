@@ -2,7 +2,14 @@
 % Steady-state simulation for initial conditions
 clear; close all; clc;
 
-Parameters % Load the parameters
+p = Parameters(); % Load the parameters
+np = p.np; % Number of points (spatial discretization)
+ns = p.ns; % Number of species
+T0 = p.T0; % [K] Inlet temperature
+deltaz1= p.deltaz1; % delta_z 1st stage
+deltaz2 = p.deltaz2; % delta_z 2nd stage
+L1 = p.L1; % [m] 1st stage length
+L2 = p.L2; % [m] 2nd stage length
 
 factor = 1;
 

@@ -1,6 +1,22 @@
-function dxdt = ESR_conc2stg(t,x,x_boundary,F_in)
+function dxdt = ESR_conc2stg(~,x,x_boundary,F_in)
 
-    Parameters % Load the parameters
+    p = Parameters(); % Load the parameters 
+    np = p.np; % Number of points (spatial discretization)
+    R = p.R; % [J/(mol-K)] Gas universal constant
+    Patm =p.Patm; % [Pa] Atmosferic pressure   
+    P0 = p.P0; % [Pa] Inlet pressure
+    T_a = p.T_a; % [K] Furnace temperature 
+    U = p.U; % [J /(m2-min-K)] Heat transfer coefficient   
+    A = p.A; % [m2] Reactor cross-sectional area      
+    a = p.a; % [m2/m3] % area per reactor volume for heat transfer    
+    ns = p.ns; % Number of species  
+    deltaz1= p.deltaz1; % delta_z 1st stage   
+    deltaz2 = p.deltaz2; % delta_z 2nd stage   
+    pe0 = p.pe0; % [mol / (min-Pa^1/2-m)] Pre-exponential factor   
+    Eam = p.Eam; % [J/mol] "Activation energy" of membrane   
+    deltam = p.deltam; % [m] membrane thickness   
+    Dm = p.Dm; % [m] Membrane diameter
+
    
     % CALCULATION
 

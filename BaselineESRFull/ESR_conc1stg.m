@@ -1,9 +1,28 @@
 function dxdt = ESR_conc1stg(t,x,u)
 
-    Parameters % Load the parameters
     global F_out
-   
-    % Input change (simulates a manipulation)
+
+    p = Parameters(); % Load the parameters 
+    np = p.np; % Number of points (spatial discretization)
+    R = p.R; % [J/(mol-K)] Gas universal constant    
+    Patm =p.Patm; % [Pa] Atmosferic pressure    
+    P0 = p.P0; % [Pa] Inlet pressure       
+    Tref = p.Tref; % [K] Reference temperature        
+    T_a = p.T_a; % [K] Furnace temperature        
+    Ea = p.Ea; % [J/mol] Activation energy       
+    kinf = p.kinf; % [mol/(m3-min-bar)]
+    % Pre-exponential factor       
+    deltaH_std = p.deltaH_std; % [J/mol] 
+    % Standard enthalpy of reactions   
+    U = p.U; % [J /(m2-min-K)] Heat transfer coefficient    
+    A = p.A; % [m2] Reactor cross-sectional area   
+    a = p.a; % [m2/m3] % area per reactor volume for heat transfer
+    T0 = p.T0; % [K] Inlet temperature
+    ns = p.ns; % Number of species
+    nr = p.nr; % Number of reactions
+    deltaz1= p.deltaz1; % delta_z 1st stage
+    
+    % Input change (change to simulate a manipulation)
     if t > 0.5
        u(1) = 0.0021;
     end
