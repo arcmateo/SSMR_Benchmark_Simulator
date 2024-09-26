@@ -6,11 +6,23 @@ global F_out
 p = Parameters(); % Load the parameters 
 np = p.np; % Number of points (spatial discretization)
 
-% Load initial conditions
-ss_filename = ['SS_files3\SS_u_1_np_',num2str(np),'.mat'];
-load(ss_filename);
-x0_2c = Flows_to_Conc(x0_2,p);
-% Transforms initial conditions from Flows to Concentrations
+%% Simulation setup
+
+initial_conditions = 1;
+switch initial_conditions
+    case 0 % ESR in steady-state with all compunds
+        ss_filename = ['SS_files3\SS_u_1_np_',num2str(np),'.mat'];
+        load(ss_filename);
+        x0_2c = Flows_to_Conc(x0_2,p);
+    case 1 % ESR in steady-state full of steam
+        ss_filename = ['SS_filesH2O\SS_u_1_np_',num2str(np),'.mat'];
+        load(ss_filename);
+        x0_1c = Flows_to_Conc(x0_1,p);
+        x0_2c = x0_1c;
+end
+
+%%
+
 
 options = odeset('RelTol', 1e-4,'AbsTol', 1e-5,'MaxStep', 1,...
     'NonNegative', 1:8*np); % Options for the Solver
