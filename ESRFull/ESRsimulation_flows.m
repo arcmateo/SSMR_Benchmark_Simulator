@@ -55,3 +55,12 @@ title('Hydrogen molar flow at the reactor outlet')
 ylabel('Molar flow [mol/min]')
 xlabel('Time [min]')
 grid on
+
+figure(3)
+plot(t2, x2(:,4*np), linewidth=2)
+title('Hydrogen concentration at the retentate outlet')
+ylabel('Concentration [mol/m3]')
+xlabel('Time [min]')
+grid on
+
+

@@ -13,7 +13,6 @@ switch initial_conditions
     case 0 % ESR in steady-state with all compunds
         ss_filename = ['SS_files3\SS_u_1_np_',num2str(np),'.mat'];
         load(ss_filename);
-        x0_2c = Flows_to_Conc(x0_2,p);
     case 1 % ESR in steady-state full of steam
         ss_filename = ['SS_filesH2O\SS_u_1_np_',num2str(np),'.mat'];
         load(ss_filename);
@@ -60,3 +59,11 @@ title('Hydrogen concentration at the reactor outlet')
 ylabel('Concentration [mol/m3]')
 xlabel('Time [min]')
 grid on
+
+figure(3)
+plot(t2, x2(:,4*np), linewidth=2)
+title('Hydrogen concentration at the retentate outlet')
+ylabel('Concentration [mol/m3]')
+xlabel('Time [min]')
+grid on
+

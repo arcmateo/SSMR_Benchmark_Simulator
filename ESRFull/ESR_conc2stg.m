@@ -39,6 +39,10 @@ function dxdt = ESR_conc2stg(~,x,x_boundary,p,F_in)
        
        F_H2_perm_k = pe_k*((pi*Dm*deltaz2)/deltam)*...
            (sqrt(P_H2_k)-sqrt(Patm)); % [mol/min]
+
+       if F_H2_perm_k < 0
+          F_H2_perm_k = 0;
+       end
        
        F_H2_perm_k_vol = (F_H2_perm_k)/(A*deltaz2);
 

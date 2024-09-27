@@ -30,15 +30,16 @@ function f = ESR_flows2stg(~,x,x_boundary,p)
         T_k = x(index3);
         
         pe_k = pe0 * exp(-Eam / (R*T_k));
-    	F_H2_k = x((4-1)*np + k);
+    	  F_H2_k = x((4-1)*np + k);
         %if (F_H2_k < 0 && abs(F_H2_k) < 1e-10)
         %    F_H2_k = 0; % Having problems with -6.3e-13 in F_H2
         %end
-    	F_H2_perm_deltaz_k = (pe_k / deltam) * (pi * Dm) * ...
-                        (sqrt(P0 * F_H2_k/sumF_k) - sqrt(Patm));
-        %if F_H2_perm_deltaz_k < 0 % TEMP TEMP TEMP
-        %    F_H2_perm_deltaz_k = 0;
-        %end
+    	  F_H2_perm_deltaz_k = (pe_k / deltam) * (pi*Dm)* ...
+                        (sqrt(P0*(F_H2_k/sumF_k)) - sqrt(Patm));
+        
+        if F_H2_perm_deltaz_k < 0
+           F_H2_perm_deltaz_k = 0;
+        end
         
         sumdFdz_k = 0;
         for j = 1 : ns
@@ -50,10 +51,10 @@ function f = ESR_flows2stg(~,x,x_boundary,p)
             end
             
             if j == 4
-                f(index) = R * T_k * sumF_k * ...
-                    	1/A * (- F_H2_perm_deltaz_k - dFdz_j_k);
+                f(index) = R*T_k*sumF_k* ...
+                    	1/A*(- F_H2_perm_deltaz_k - dFdz_j_k);
             else
-                f(index) = R * T_k * sumF_k * (- 1/A * dFdz_j_k);
+                f(index) = R*T_k*sumF_k*(- 1/A * dFdz_j_k);
             end
             
             sumdFdz_k = sumdFdz_k + dFdz_j_k;
