@@ -4,16 +4,17 @@ clear; close all; clc;
 
 p = Parameters(); % Load the parameters 
 np = p.np; % Number of points (spatial discretization)
+addpath('SS_files2','SS_filesH2O');
 
 %% Simulation setup
 
 initial_conditions = 1;
 switch initial_conditions
     case 0 % ESR in steady-state with all compunds
-        ss_filename = ['SS_files2\SS_u_1_np_',num2str(np),'.mat'];
+        ss_filename = ['SS_u_1_np_',num2str(np),'.mat'];
         load(ss_filename);
     case 1 % ESR in steady-state full of steam
-        ss_filename = ['SS_filesH2O\SS_u_1_np_',num2str(np),'.mat'];
+        ss_filename = ['SS_u_1_np_H2O_',num2str(np),'.mat'];
         load(ss_filename);
         x0_2 = x0_1;
 end
