@@ -3,7 +3,7 @@ function f = ESR_flows2stg(~,x,x_boundary,p)
     np = p.np; % Number of points (spatial discretization)
     R = p.R; % [J/(mol-K)] Gas universal constant
     Patm =p.Patm; % [Pa] Atmosferic pressure
-    P0 = p.P0; % [Pa] Inlet pressure  
+    P_in = p.P_in; % [Pa] Inlet pressure  
     T_a = p.T_a; % [K] Furnace temperature
     U = p.U; % [J /(m2-min-K)] Heat transfer coefficient
     A = p.A; % [m2] Reactor cross-sectional area  
@@ -35,7 +35,7 @@ function f = ESR_flows2stg(~,x,x_boundary,p)
         %    F_H2_k = 0; % Having problems with -6.3e-13 in F_H2
         %end
     	  F_H2_perm_deltaz_k = (pe_k / deltam) * (pi*Dm)* ...
-                        (sqrt(P0*(F_H2_k/sumF_k)) - sqrt(Patm));
+                        (sqrt(P_in*(F_H2_k/sumF_k)) - sqrt(Patm));
         
         if F_H2_perm_deltaz_k < 0
            F_H2_perm_deltaz_k = 0;

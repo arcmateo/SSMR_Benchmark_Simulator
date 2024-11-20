@@ -3,7 +3,7 @@ function f = ESR_flows1stg(t,x,u,p)
     np = p.np; % Number of points (spatial discretization)
     R = p.R; % [J/(mol-K)] Gas universal constant 
     Patm =p.Patm; % [Pa] Atmosferic pressure
-    P0 = p.P0; % [Pa] Inlet pressure     
+    P_in = p.P_in; % [Pa] Inlet pressure     
     Tref = p.Tref; % [K] Reference temperature   
     T_a = p.T_a; % [K] Furnace temperature    
     Ea = p.Ea; % [J/mol] Activation energy
@@ -14,7 +14,7 @@ function f = ESR_flows1stg(t,x,u,p)
     U = p.U; % [J /(m2-min-K)] Heat transfer coefficient
     A = p.A; % [m2] Reactor cross-sectional area
     a = p.a; % [m2/m3] % area per reactor volume for heat transfer
-    T0 = p.T0; % [K] Inlet temperature
+    T_in = p.T_in; % [K] Inlet temperature
     ns = p.ns; % Number of species
     nr = p.nr; % Number of reactions
     deltaz1= p.deltaz1; % delta_z 1st stage
@@ -26,8 +26,7 @@ function f = ESR_flows1stg(t,x,u,p)
     end
 
     F_in = [u(1), u(2), zeros(1,ns-2)]; % [mol/min] Vector of inlet molar flow rates
-    T_in = T0; % [K] Inlet temperature
-
+    
     % Reactions    R1 R2 R3 R4     Stoichiometric matrix           
     stoich_mat = [-1, -1, 0,  0;...  % C2H5OH
                           0,  0, -1, -3;... % H2O,
@@ -37,7 +36,7 @@ function f = ESR_flows1stg(t,x,u,p)
                           0,  0,  1,  2;...  % CO2
                           1,  0,  0, -1];  %  CH3CHO
      
-    p_bar = P0/Patm; % [bar]
+    p_bar = P_in/Patm; % [bar]
    
     v = zeros(np,1);
     
@@ -74,7 +73,7 @@ function f = ESR_flows1stg(t,x,u,p)
                     (p_bar * Fratio_H2O_k)^3;
        
        % Vector of velocity
-       v(k) = ((R*T_k)/(P0*A))*sum(F_k); % [m/min]
+       v(k) = ((R*T_k)/(P_in*A))*sum(F_k); % [m/min]
         
        % Computing dCdt
        sumdFdz_k = 0;

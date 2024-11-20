@@ -5,7 +5,7 @@ function dxdt = ESR_conc1stg(t,x,u,p)
     np = p.np; % Number of points (spatial discretization)
     R = p.R; % [J/(mol-K)] Gas universal constant    
     Patm =p.Patm; % [Pa] Atmosferic pressure    
-    P0 = p.P0; % [Pa] Inlet pressure       
+    P_in = p.P_in; % [Pa] Inlet pressure       
     Tref = p.Tref; % [K] Reference temperature        
     T_a = p.T_a; % [K] Furnace temperature        
     Ea = p.Ea; % [J/mol] Activation energy       
@@ -16,7 +16,7 @@ function dxdt = ESR_conc1stg(t,x,u,p)
     U = p.U; % [J /(m2-min-K)] Heat transfer coefficient    
     A = p.A; % [m2] Reactor cross-sectional area   
     a = p.a; % [m2/m3] % area per reactor volume for heat transfer
-    T0 = p.T0; % [K] Inlet temperature
+    T_in = p.T_in; % [K] Inlet temperature
     ns = p.ns; % Number of species
     nr = p.nr; % Number of reactions
     deltaz1= p.deltaz1; % delta_z 1st stage
@@ -27,9 +27,8 @@ function dxdt = ESR_conc1stg(t,x,u,p)
     end
 
     F_in = [u(1), u(2), zeros(1,ns-2)]; % [mol/min] Vector of inlet molar flow rates
-    T_in = T0; % [K] Inlet temperature
-    C_in = ((F_in/sum(F_in))/(R*T_in))*P0; % [mol/m3] Vector of inlet Concentrations
-    v_in = ((R*T_in)/(A*P0))*sum(F_in); % [m/min] Inlet velocity
+    C_in = ((F_in/sum(F_in))/(R*T_in))*P_in; % [mol/m3] Vector of inlet Concentrations
+    v_in = ((R*T_in)/(A*P_in))*sum(F_in); % [m/min] Inlet velocity
 
     % Reactions    R1 R2 R3 R4     Stoichiometric matrix           
     stoich_mat = [-1, -1, 0,  0;...  % C2H5OH
@@ -80,7 +79,7 @@ function dxdt = ESR_conc1stg(t,x,u,p)
        end
         
        v_k_1 = v_k_0; % velocity at previous point must be recorded
-       v_k_0 = ((R*T_k)/(P0*A))*Ftot_k; % [m/min] v = (RT/PA)*Flow
+       v_k_0 = ((R*T_k)/(P_in*A))*Ftot_k; % [m/min] v = (RT/PA)*Flow
        
        % Computing dCdt
        for j = 1:ns % for species j

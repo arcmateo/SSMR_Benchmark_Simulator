@@ -4,7 +4,7 @@ function dxdt = ESR_conc2stg(~,x,x_boundary,p,F_in)
     np = p.np; % Number of points (spatial discretization)
     R = p.R; % [J/(mol-K)] Gas universal constant
     Patm =p.Patm; % [Pa] Atmosferic pressure   
-    P0 = p.P0; % [Pa] Inlet pressure
+    P_in = p.P_in; % [Pa] Inlet pressure
     T_a = p.T_a; % [K] Furnace temperature 
     U = p.U; % [J /(m2-min-K)] Heat transfer coefficient   
     A = p.A; % [m2] Reactor cross-sectional area      
@@ -23,7 +23,7 @@ function dxdt = ESR_conc2stg(~,x,x_boundary,p,F_in)
     C_in = x_boundary(1:ns); % [mol/m3] Vector of inlet Concentrations
     T_in = x_boundary(ns+1); % [K] Inlet temperature
 
-    v_in = ((R*T_in)/(A*P0))*sum(F_in); % [m/min] Inlet velocity
+    v_in = ((R*T_in)/(A*P_in))*sum(F_in); % [m/min] Inlet velocity
 
     v_k_0 = 0; % velocity must be initialized to something to record v_k_1 for k > 1
 
@@ -53,7 +53,7 @@ function dxdt = ESR_conc2stg(~,x,x_boundary,p,F_in)
        end
    
        v_k_1 = v_k_0; % velocity at previous point must be recorded
-       v_k_0 = ((R*T_k)/(P0*A))*Ftot_k; % [m/min] v = (RT/PA)*Flow
+       v_k_0 = ((R*T_k)/(P_in*A))*Ftot_k; % [m/min] v = (RT/PA)*Flow
        
        % Computing dCdt
        for j = 1:ns % for species j

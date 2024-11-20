@@ -8,7 +8,7 @@ addpath('SS_files2','SS_filesH2O');
 
 %% Simulation setup
 
-initial_conditions = 1;
+initial_conditions = 0;
 switch initial_conditions
     case 0 % ESR in steady-state with all compunds
         ss_filename = ['SS_u_1_np_',num2str(np),'.mat'];

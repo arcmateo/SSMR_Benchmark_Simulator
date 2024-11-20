@@ -2,7 +2,7 @@ function g = SS_function2stg(~,x,p)
  
     R = p.R; % [J/(mol-K)] Gas universal constant
     Patm =p.Patm; % [Pa] Atmosferic pressure
-    P0 = p.P0; % [Pa] Inlet pressure    
+    P_in = p.P_in; % [Pa] Inlet pressure    
     T_a = p.T_a; % [K] Furnace temperature   
     U = p.U; % [J /(m2-min-K)] Heat transfer coefficient
     A = p.A; % [m2] Reactor cross-sectional area
@@ -24,7 +24,7 @@ function g = SS_function2stg(~,x,p)
     
     H2 = 4; % Hydrogen index according to the order established here
     pe = pe0 * exp(-Eam / (R*T)); % [[mol/(min-Pa^1/2-m)]] Permeability
-    F_H2_perm_deltaz = (pe/deltam)*(pi*Dm)*(sqrt(P0*F(H2)/sumF) - sqrt(Patm));
+    F_H2_perm_deltaz = (pe/deltam)*(pi*Dm)*(sqrt(P_in*F(H2)/sumF) - sqrt(Patm));
     % [mol/min-m] Flow of hydrogen modeled by the Sievert's law
 
    % Molar heat capacities at constant pressure % [J/(mol-K)]

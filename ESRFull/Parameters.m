@@ -11,15 +11,15 @@ p.R = 8.31432; % [J/(mol-K)] Gas universal constant
 
 p.Patm = 101325; % [Pa] Atmosferic pressure
 
-p.P0 = 4*p.Patm; % [Pa] Inlet pressure
+p.P_in = 4*p.Patm; % [Pa] Inlet pressure
 
-p.P_bar = p.P0/p.Patm; % [bar] Constant pressure assumed along the reactor
+p.P_bar = p.P_in/p.Patm; % [bar] Constant pressure assumed along the reactor
     
-p.T0 = 873.15; % [K] Inlet temperature
+p.T_in = 873.15; % [K] Inlet temperature
     
 p.Tref = 773.15; % [K] Reference temperature
     
-p.T_a = p.T0; % [K] Furnace temperature
+p.T_a = p.T_in; % [K] Furnace temperature
     
 p.Ea = [7.0e4, 1.30e5, 7.0e4, 9.8e4]; % [J/mol] Activation energy
     

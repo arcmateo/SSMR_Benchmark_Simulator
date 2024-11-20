@@ -5,7 +5,7 @@ clear; close all; clc;
 p = Parameters(); % Load the parameters
 np = p.np; % Number of points (spatial discretization)
 ns = p.ns; % Number of species
-T0 = p.T0; % [K] Inlet temperature
+T_in = p.T_in; % [K] Inlet temperature
 deltaz1= p.deltaz1; % delta_z 1st stage
 deltaz2 = p.deltaz2; % delta_z 2nd stage
 L1 = p.L1; % [m] 1st stage length
@@ -17,7 +17,7 @@ u_ss = [0.0021; 0.0099]; % [mol/min] steady-state inputs
 % order: [C2H5OH, H2O]
 
 % SIMULATION of SS for the 1st stage 
-x_ss_1 = [u_ss; zeros(ns-2,1); T0]; % Set boundary conditions (k = 0)
+x_ss_1 = [u_ss; zeros(ns-2,1); T_in]; % Set boundary conditions (k = 0)
 
 options = odeset('MaxStep', 1, 'NonNegative', 1:8); % Options for the Solver
 
