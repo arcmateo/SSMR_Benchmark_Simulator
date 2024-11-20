@@ -28,10 +28,14 @@ options = odeset('RelTol', 1e-4,'AbsTol', 1e-5,'MaxStep', 1,...
 
 % Configure solver and launch simulation
 
-t_interv = [0 1]; % [min] Simulation time
+t = 1; % [min] Simulation overall time
+
+t_interv = [0 t]; % [min] Simulation time interval
 
 tic
+
 [t1,x1] = ode15s(@(t,x)ESR_conc1stg(t,x,u_ss,p), t_interv, x0_1c, options);
+
 toc
 
 disp("First stage done")
