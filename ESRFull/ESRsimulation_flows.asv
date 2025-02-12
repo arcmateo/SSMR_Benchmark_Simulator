@@ -66,3 +66,8 @@ ylabel('Molar flow [mol/min]')
 xlabel('Time [min]')
 grid on
 
+factor = 1;
+x0_1 = x1(end,:);
+x0_2 = x2(end,:);
+filename = ['SS_filesH2O\SS_u_',num2str(factor),'_np_','H2O_',num2str(np),'.mat'];
+save(filename, 'x0_1c', 'x0_2c', 'u_ss', 'np');

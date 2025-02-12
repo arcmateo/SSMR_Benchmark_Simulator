@@ -41,7 +41,7 @@ x0_2 = x0_2(2:end,:); % (without z = 0 of second stage))
 x0_2 = x0_2(:); % only 1 column vector for initial conditions!
 
 
-% Save solution into a file to load later on
+Save solution into a file to load later on
 filename = ['SS_files\SS_u_',num2str(factor),'_np_', num2str(np),'.mat'];
 save(filename, 'x0_1', 'x0_2', 'u_ss', 'np');
 disp(['Stored file: ', filename])

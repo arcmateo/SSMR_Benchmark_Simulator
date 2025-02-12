@@ -21,9 +21,9 @@ function f = ESR_flows1stg(t,x,u,p)
     
 
     % Input change (change to simulate a manipulation)
-    if t > 0.5
-       u(1) = 0.0021;
-    end
+    % if t > 0.1
+    %    u(2) = 0.0087;
+    % end
 
     F_in = [u(1), u(2), zeros(1,ns-2)]; % [mol/min] Vector of inlet molar flow rates
     

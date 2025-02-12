@@ -5,7 +5,7 @@ function p = Parameters()
 % Order of reactions: [dehydrogenation, decomposition, WGSR, reforming]
 % Order of species: [C2H5OH, H2O, CH4, H2, CO, CO2, CH3CHO]
 
-p.np = 200; % Number of points (spatial discretization)
+p.np = 50; % Number of points (spatial discretization)
 
 p.R = 8.31432; % [J/(mol-K)] Gas universal constant
 

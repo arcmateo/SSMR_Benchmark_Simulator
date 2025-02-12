@@ -23,7 +23,7 @@ end
 
 %%
 
-options = odeset('RelTol', 1e-4,'AbsTol', 1e-5,'MaxStep', 1,...
+options = odeset('RelTol', 1e-4,'AbsTol', 1e-5,'MaxStep', 0.1,...
     'NonNegative', 1:8*np); % Options for the Solver
 
 % Configure solver and launch simulation
@@ -71,3 +71,8 @@ ylabel('Concentration [mol/m3]')
 xlabel('Time [min]')
 grid on
 
+% factor = 1;
+% x0_1c = x1(end,:);
+% x0_2c = x2(end,:);
+% filename = ['SS_files3\SS_u_',num2str(factor),'_np_', num2str(np),'.mat'];
+% save(filename, 'x0_1c', 'x0_2c', 'u_ss', 'np');
