@@ -1,11 +1,13 @@
-function dxdt = SSMR_function(t,x,u,p)
+function dxdt = SSMR_function(~,x,u,p)
+global vel1 vel2
 
 % Parameters first stage 
 
 np = p.np; % Number of points (spatial discretization)
 R = p.R; % [J/(mol-K)] Gas universal constant    
 Patm =p.Patm; % [Pa] Atmosferic pressure    
-P_in = p.P_in; % [Pa] Inlet pressure       
+P_in = p.P_in; % [Pa] Inlet pressure
+P_bar = p.P_bar; % [bar] Inlet pressure 
 Tref = p.Tref; % [K] Reference temperature        
 T_a = p.T_a; % [K] Furnace temperature        
 Ea = p.Ea; % [J/mol] Activation energy       
@@ -26,13 +28,9 @@ pe0 = p.pe0; % [mol / (min-Pa^1/2-m)] Pre-exponential factor
 Eam = p.Eam; % [J/mol] "Activation energy" of membrane   
 deltam = p.deltam; % [m] membrane thickness   
 Dm = p.Dm; % [m] Membrane diameter
+Am = p.Am; % [m2] Membrane cross-sectional area
 
 % Calculation
-
-%Input change (change to simulate a manipulation)
-if t > 0.1
-   u(2) = 0.0087;
-end
 
 F_in = [u(1), u(2), zeros(1,ns-2)]; % [mol/min] Vector of inlet molar flow rates
 C_in = ((F_in/sum(F_in))/(R*T_in))*P_in; % [mol/m3] Vector of inlet Concentrations
@@ -68,15 +66,15 @@ for k = 1:2*np
        r_k = zeros(nr, 1); % Reaction rates at point k
 
        % Partial pressure of each especies in [bar]
-       P_C2H5OH = (C_k(1)*R*T_k)/Patm;
-       P_H2O = (C_k(2)*R*T_k)/Patm;
+       P_C2H5OH = (C_k(1)*R*T_k)/1e5;
+       P_H2O = (C_k(2)*R*T_k)/1e5;
        % Partial pressure of methane is not required
-       P_H2 = (C_k(4)*R*T_k)/Patm;
-       P_CO = (C_k(5)*R*T_k)/Patm;
-       P_CO2 = (C_k(6)*R*T_k)/Patm;
-       P_CH3CHO = (C_k(7)*R*T_k)/Patm;
+       P_H2 = (C_k(4)*R*T_k)/1e5;
+       P_CO = (C_k(5)*R*T_k)/1e5;
+       P_CO2 = (C_k(6)*R*T_k)/1e5;
+       P_CH3CHO = (C_k(7)*R*T_k)/1e5;
    
-       r_k(1) = kreact_k(1)*(P_C2H5OH);
+       r_k(1) = kreact_k(1)*(P_C2H5OH)/(1+3.5*(P_bar-1));
        r_k(2) = kreact_k(2)*(P_C2H5OH); 
        r_k(3) = kreact_k(3)*(P_CO*P_H2O - ((P_CO2*P_H2)/kWGS_k));
        r_k(4) = kreact_k(4)*P_CH3CHO*P_H2O^3;
@@ -138,7 +136,9 @@ for k = 1:2*np
            dTdz_k = (x(index3) - x(index3 - 1)) / deltaz1;
        end  
        dxdt(index3) = (U*a*(T_a-T_k) + Hr_k - (Cp*C_k) * v_k_0*dTdz_k) / (Cv*C_k);    
-    
+       
+       vel1 = v_k_0;
+
    else
 
       C_k = x((ns*np)+k:np:2*ns*np+np); % Vector of conc. of each species at point k
@@ -161,7 +161,7 @@ for k = 1:2*np
           F_H2_perm_k = 0;
        end
        
-       F_H2_perm_k_vol = (F_H2_perm_k)/(A*deltaz2);
+       F_H2_perm_k_vol = (F_H2_perm_k)/((A-Am)*deltaz2);
 
        if k == np+1
            Ftot_k = sum(F_in) - F_H2_perm_k;
@@ -169,7 +169,7 @@ for k = 1:2*np
            Ftot_k = Ftot_k - F_H2_perm_k;
        end
        v_k_1 = v_k_0; % velocity at previous point must be recorded
-       v_k_0 = ((R*T_k)/(P_in*A))*Ftot_k; % [m/min] v = (RT/PA)*Flow
+       v_k_0 = ((R*T_k)/(P_in*(A-Am)))*Ftot_k; % [m/min] v = (RT/PA)*Flow
 
        % Computing dCdt
        for j = 1:ns % for species j
@@ -212,6 +212,7 @@ for k = 1:2*np
            - F_H2_perm_k_vol*U_H2) / (Cv*C_k);    
       end
 
+      vel2 = v_k_0;
 end
 
 end

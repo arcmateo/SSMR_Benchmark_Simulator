@@ -11,11 +11,11 @@ p.R = 8.31432; % [J/(mol-K)] Gas universal constant
 
 p.Patm = 101325; % [Pa] Atmosferic pressure
 
-p.P_in = 4*p.Patm; % [Pa] Inlet pressure
+p.P_in = 4*1e5; % [Pa] Inlet pressure
 
-p.P_bar = p.P_in/p.Patm; % [bar] Constant pressure assumed along the reactor
+p.P_bar = p.P_in/1e5; % [bar] Constant pressure assumed along the reactor
     
-p.T_in = 873.15; % [K] Inlet temperature
+p.T_in = 773.15; % [K] Inlet temperature
     
 p.Tref = 773.15; % [K] Reference temperature
     
@@ -58,5 +58,7 @@ p.Eam = 8.8e3; % [J/mol] "Activation energy" of membrane
 p.deltam = 3.0e-5; % [m] membrane thickness
 
 p.Dm = ((1/8)*0.0254); % [m] Membrane diameter
+
+p.Am = pi*((p.Dm^2)/4); % [m2] Membrane cross-sectional area
 
 end
