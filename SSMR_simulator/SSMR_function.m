@@ -1,4 +1,4 @@
-function dxdt = SSMR_function(~,x,u,p)
+function dxdt = SSMR(~,x,u,p)
 global vel1 vel2
 
 % Parameters first stage 
@@ -6,7 +6,7 @@ global vel1 vel2
 np = p.np; % Number of points (spatial discretization)
 R = p.R; % [J/(mol-K)] Gas universal constant    
 Patm =p.Patm; % [Pa] Atmosferic pressure    
-P_in = p.P_in; % [Pa] Inlet pressure
+P_in = p.P_in; % [Pa] Inlet pressure   
 P_bar = p.P_bar; % [bar] Inlet pressure 
 Tref = p.Tref; % [K] Reference temperature        
 T_a = p.T_a; % [K] Furnace temperature        
@@ -138,9 +138,9 @@ for k = 1:2*np
        dxdt(index3) = (U*a*(T_a-T_k) + Hr_k - (Cp*C_k) * v_k_0*dTdz_k) / (Cv*C_k);    
        
        vel1 = v_k_0;
-
+       
    else
-
+      
       C_k = x((ns*np)+k:np:2*ns*np+np); % Vector of conc. of each species at point k
       index3 = 2*ns*np + k; % Index for the temperature at point k
       T_k = x(index3); % Temperature at point k
@@ -212,7 +212,8 @@ for k = 1:2*np
            - F_H2_perm_k_vol*U_H2) / (Cv*C_k);    
       end
 
-      vel2 = v_k_0;
 end
+vel2 = v_k_0;
 
 end
+
