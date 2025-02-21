@@ -1,5 +1,6 @@
-function dxdt = SSMR(~,x,u,p)
-global vel1 vel2
+function dxdt = SSMR_function(~,x,u,p)
+global F_H2
+F_H2 = 0; % Initialization
 
 % Parameters first stage 
 
@@ -28,7 +29,6 @@ pe0 = p.pe0; % [mol / (min-Pa^1/2-m)] Pre-exponential factor
 Eam = p.Eam; % [J/mol] "Activation energy" of membrane   
 deltam = p.deltam; % [m] membrane thickness   
 Dm = p.Dm; % [m] Membrane diameter
-Am = p.Am; % [m2] Membrane cross-sectional area
 
 % Calculation
 
@@ -137,8 +137,6 @@ for k = 1:2*np
        end  
        dxdt(index3) = (U*a*(T_a-T_k) + Hr_k - (Cp*C_k) * v_k_0*dTdz_k) / (Cv*C_k);    
        
-       vel1 = v_k_0;
-       
    else
       
       C_k = x((ns*np)+k:np:2*ns*np+np); % Vector of conc. of each species at point k
@@ -156,12 +154,14 @@ for k = 1:2*np
        
        F_H2_perm_k = pe_k*((pi*Dm*deltaz2)/deltam)*...
            (sqrt(P_H2_k)-sqrt(Patm)); % [mol/min]
-       
+
        if F_H2_perm_k < 0
           F_H2_perm_k = 0;
        end
        
-       F_H2_perm_k_vol = (F_H2_perm_k)/((A-Am)*deltaz2);
+       F_H2 = F_H2 + F_H2_perm_k; % [mol/min]
+
+       F_H2_perm_k_vol = (F_H2_perm_k)/(A*deltaz2);
 
        if k == np+1
            Ftot_k = sum(F_in) - F_H2_perm_k;
@@ -169,7 +169,7 @@ for k = 1:2*np
            Ftot_k = Ftot_k - F_H2_perm_k;
        end
        v_k_1 = v_k_0; % velocity at previous point must be recorded
-       v_k_0 = ((R*T_k)/(P_in*(A-Am)))*Ftot_k; % [m/min] v = (RT/PA)*Flow
+       v_k_0 = ((R*T_k)/(P_in*A))*Ftot_k; % [m/min] v = (RT/PA)*Flow
 
        % Computing dCdt
        for j = 1:ns % for species j
@@ -213,7 +213,6 @@ for k = 1:2*np
       end
 
 end
-vel2 = v_k_0;
 
 end
 
