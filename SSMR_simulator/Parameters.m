@@ -1,21 +1,21 @@
-function p = Parameters()
+function p = Parameters(P_in, T_in, np)
 
 % PARAMETERS ----------
 
 % Order of reactions: [dehydrogenation, decomposition, WGSR, reforming]
 % Order of species: [C2H5OH, H2O, CH4, H2, CO, CO2, CH3CHO]
 
-p.np = 50; % Number of points (spatial discretization)
+p.np = np; % Number of points (spatial discretization)
 
 p.R = 8.31432; % [J/(mol-K)] Gas universal constant
 
 p.Patm = 101325; % [Pa] Atmosferic pressure
 
-p.P_in = 4*1e5; % [Pa] Inlet pressure
+p.P_in = P_in*1e5; % [Pa] Inlet pressure
 
 p.P_bar = p.P_in/1e5; % [bar] Constant pressure assumed along the reactor
     
-p.T_in = 773.15; % [K] Inlet temperature
+p.T_in = T_in; % [K] Inlet temperature
     
 p.Tref = 773.15; % [K] Reference temperature
     
