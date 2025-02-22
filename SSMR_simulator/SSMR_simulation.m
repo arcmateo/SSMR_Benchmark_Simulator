@@ -44,7 +44,6 @@ load(ss_filename);
 options = odeset('RelTol', 1e-4,'AbsTol', 1e-5,'MaxStep', 0.1,...
     'NonNegative', 1:8*2*np); % Options for the Solver
 
-% Configure solver and launch simulation
 
 % Select the overall simulation time
 t = 30; % [min] between 10 and 30 min are recommended
