@@ -7,7 +7,9 @@ addpath('ICFull','ICH2O');
 
 %% Simulation setup
 
-% Select the number of points (spatial discretization): 50 or 200
+% Select the number of mesh points (spatial discretization): 50 or 200
+%FD: why only 50 or 200? make sure that it's explained in paper or
+%readme.md
 np = 50;
 
 % Select the normal operating conditions: Mode 1, 2 or 3
@@ -28,7 +30,8 @@ end
 p = Parameters(P_in, T_in, np); % Load the parameters 
 
 % Select the initial conditions:
-% 0 = steady state with all compunds, 1 =  steady state full of steam
+%   0 = steady state, reactor contains all compounds
+%   1 = steady state, reactor contains only steam
 initial_conditions = 0; 
 
 switch initial_conditions
@@ -46,7 +49,7 @@ options = odeset('RelTol', 1e-4,'AbsTol', 1e-5,'MaxStep', 0.1,...
 
 
 % Select the overall simulation time
-t = 30; % [min] between 10 and 30 min are recommended
+t = 30; % [min] - recommended: between 10 and 30 min
 
 % Select the sampling time
 t_s = 0.1; % [min] 
@@ -64,10 +67,10 @@ switch control_law
    case 0
       tic
       for k = 1:length(time)
-      [t,x] = ode15s(@(t,x)SSMR_function(t,x,u_ss,p), [0 t_s], x0c, options);
-      y_output(k) = F_H2;
-      u_output(k) = u_ss(1);
-      x0c = x(end,:);
+          [t,x] = ode15s(@(t,x)SSMR_function(t,x,u_ss,p), [0 t_s], x0c, options);
+          y_output(k) = F_H2;
+          u_output(k) = u_ss(1);
+          x0c = x(end,:);
       end
       toc
       figure(1)
@@ -86,22 +89,22 @@ switch control_law
       prev_error = 0;
       tic
       for k = 1:length(time)
-      u_output(k) = u_ss(1);
-      [t,x] = ode15s(@(t,x)SSMR_function(t,x,u_ss,p), [0 t_s], x0c, options);
-      y_output(k) = F_H2;
-      error = y_sp(k) - y_output(k);
-      integral_error = integral_error + error*t_s;
-      derivative_error = (error - prev_error)/t_s;
-      deltau = kp*error + ki*integral_error + kd*derivative_error;
-      u_ss(1) = u_ss(1) + deltau;
-      if u_ss(1) <= 0.0018
-         u_ss(1) = 0.0018;
-      end
-      if u_ss(1) >= 0.0024
-         u_ss(1) = 0.0024;
-      end
-      prev_error = error;
-      x0c = x(end,:);
+          u_output(k) = u_ss(1);
+          [t,x] = ode15s(@(t,x)SSMR_function(t,x,u_ss,p), [0 t_s], x0c, options);
+          y_output(k) = F_H2;
+          error = y_sp(k) - y_output(k);
+          integral_error = integral_error + error*t_s;
+          derivative_error = (error - prev_error)/t_s;
+          deltau = kp*error + ki*integral_error + kd*derivative_error;
+          u_ss(1) = u_ss(1) + deltau;
+          if u_ss(1) <= 0.0018
+             u_ss(1) = 0.0018;
+          end
+          if u_ss(1) >= 0.0024
+             u_ss(1) = 0.0024;
+          end
+          prev_error = error;
+          x0c = x(end,:);
       end
       toc
       figure;
@@ -121,4 +124,3 @@ switch control_law
       title('Control Input');
       grid on
 end
-
