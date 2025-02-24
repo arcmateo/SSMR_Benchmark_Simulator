@@ -1,4 +1,4 @@
-% Ethanol Steam Reformer (with finite differences)
+% Staged-separation membrane reactor (with finite differences)
 % Model in terms of Concentrations
 clear; close all; clc;
 global F_H2
@@ -8,6 +8,8 @@ addpath('ICFull','ICH2O');
 %% Simulation setup
 
 % Select the number of points (spatial discretization): 50 or 200
+% FD: why only 50 or 200? make sure that it's explained in paper or
+% readme.md
 np = 50;
 
 % Select the normal operating conditions: Mode 1, 2 or 3
@@ -28,7 +30,8 @@ end
 p = Parameters(P_in, T_in, np); % Load the parameters 
 
 % Select the initial conditions:
-% 0 = steady state with all compunds, 1 =  steady state full of steam
+% 0 = steady state, reactor contains all compounds
+% 1 = steady state, reactor contains only steam
 initial_conditions = 0; 
 
 switch initial_conditions
@@ -46,12 +49,14 @@ options = odeset('RelTol', 1e-4,'AbsTol', 1e-5,'MaxStep', 0.1,...
 
 
 % Select the overall simulation time
-t = 30; % [min] between 10 and 30 min are recommended
+t = 30; % [min] - recommended: between 10 and 30 min
 
 % Select the sampling time
 t_s = 0.1; % [min] 
 
-% Select the control law, open loop = 0, PID = 1
+% Select the control law:
+% 0 = open loop 
+% 1 = PID 
 control_law = 1;
 
 time = 0:t_s:t;
