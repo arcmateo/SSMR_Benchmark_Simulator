@@ -111,18 +111,19 @@ switch control_law
       toc
       figure;
       subplot(2,1,1);
-      plot(time, y_output, 'b', 'LineWidth', 1.5);
+      plot(time, y_output, 'b', 'LineWidth', 2.0);
       hold on;
-      stairs(time, y_sp, 'r--', 'LineWidth', 1.0);
+      stairs(time, y_sp, 'r--', 'LineWidth', 2.0);
       xlabel('Time (min)'); 
-      ylabel('Pure H2 flow [mol/min]');
+      ylabel('Pure H_{2} flow [mol/min]');
       title('System response');
-      legend('Pure H2 flow', 'Setpoint');
+      legend('Pure H2 molar flow', 'Set-point');
       grid on  
       subplot(2,1,2);
-      stairs(time, u_output, 'k', 'LineWidth', 1.5);
+      stairs(time, u_output, 'k', 'LineWidth', 2.0);
       xlabel('Time (min)'); 
-      ylabel('Inlet ethanol flow [mol/min]');
+      ylabel('Inlet Ethanol flow [mol/min]');
       title('Control Input');
       grid on
 end
+
