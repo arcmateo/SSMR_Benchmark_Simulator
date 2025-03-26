@@ -10,10 +10,10 @@ addpath('ICFull','ICH2O');
 % Select the number of points (spatial discretization): 50 or 200
 % FD: why only 50 or 200? make sure that it's explained in paper or
 % readme.md
-np = 50;
+np = 200;
 
 % Select the normal operating conditions: Mode 1, 2 or 3
-Mode = 1;
+Mode = 3;
 
 switch Mode
    case 1
@@ -32,7 +32,7 @@ p = Parameters(P_in, T_in, np); % Load the parameters
 % Select the initial conditions:
 %   0 = steady state, reactor contains all compounds
 %   1 = steady state, reactor contains only steam
-initial_conditions = 0; 
+initial_conditions = 1; 
 
 switch initial_conditions
     case 0 
@@ -49,7 +49,7 @@ options = odeset('RelTol', 1e-4,'AbsTol', 1e-5,'MaxStep', 0.1,...
 
 
 % Select the overall simulation time
-t = 30; % [min] - recommended: between 10 and 30 min
+t = 1; % [min] - recommended: between 10 and 30 min
 
 % Select the sampling time
 t_s = 0.1; % [min] 
@@ -57,7 +57,7 @@ t_s = 0.1; % [min]
 % Select the control law:
 % 0 = open loop 
 % 1 = PID 
-control_law = 1;
+control_law = 0;
 
 time = 0:t_s:t;
 y_output = zeros(size(time));

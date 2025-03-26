@@ -72,7 +72,7 @@ function dxdt = SSMR_function(~,x,u,p)
           P_CO2 = (C_k(6)*R*T_k)/1e5;
           P_CH3CHO = (C_k(7)*R*T_k)/1e5;
        
-          r_k(1) = kreact_k(1)*(P_C2H5OH)/(1+3.5*(P_bar-1));
+          r_k(1) = kreact_k(1)*(P_C2H5OH)/(7.96+5.82*(P_bar-1));
           r_k(2) = kreact_k(2)*(P_C2H5OH); 
           r_k(3) = kreact_k(3)*(P_CO*P_H2O - ((P_CO2*P_H2)/kWGS_k));
           r_k(4) = kreact_k(4)*P_CH3CHO*P_H2O^3;
@@ -146,7 +146,7 @@ function dxdt = SSMR_function(~,x,u,p)
           v_in = v_k_0; % [m/min] Inlet velocity
           Q_in = A*v_in; % [m3/min] Inlet volumetric flow
           F_in = Q_in*sum(C_in); % [mol/min] Inlet molar flow
-          pe_k = pe0 * exp(-Eam/(R*T_k)); % [mol/m min Pa^(1/2)]
+          pe_k = 0.32 * pe0 * exp(-Eam/(R*T_k)); % [mol/m min Pa^(1/2)]
           P_H2_k = C_k(4)*R*T_k; % [Pa]
            
           F_H2_perm_k = pe_k*((pi*Dm*deltaz2)/deltam)*...
