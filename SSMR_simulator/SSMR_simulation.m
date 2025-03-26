@@ -10,10 +10,10 @@ addpath('ICFull','ICH2O');
 % Select the number of points (spatial discretization): 50 or 200
 % FD: why only 50 or 200? make sure that it's explained in paper or
 % readme.md
-np = 200;
+np = 50;
 
 % Select the normal operating conditions: Mode 1, 2 or 3
-Mode = 3;
+Mode = 1;
 
 switch Mode
    case 1
