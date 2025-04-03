@@ -1,31 +1,15 @@
-% Staged-separation membrane reactor (with finite differences)
-% Model in terms of Concentrations
+%% BENCHMARK SIMULATOR
+% Staged-separation membrane reactor (SSMR)
 clear; close all; clc;
-global F_H2
 addpath('ICFull','ICH2O');
 
-%% Simulation setup
+% Simulation setup ----------------------------------------------------
 
 % Select the number of points (spatial discretization): 50 or 200
 np = 50;
 
 % Select the normal operating conditions: Mode 1, 2 or 3
 Mode = 1;
-
-switch Mode
-   case 1
-      P_in = 4.0; % [bar]
-      T_in = 773.15; % [K]
-      ss = 2.27354e-4; % [mol/min]
-   case 2
-      P_in = 6.0; % [bar]
-      T_in = 823.15; % [K]
-      ss = 2.76379e-4; % [mol/min]
-   case 3
-      P_in = 8.0; % [bar]
-      T_in = 873.15; % [K]
-      ss = 5.81357e-4; % [mol/min]
-end
 
 % Select the disturbance scenario
 % 0 = Without disturbances
@@ -42,6 +26,44 @@ Disturbance = 0;
 % 1 = steady state, reactor contains only steam
 initial_conditions = 0; 
 
+% Select the overall simulation time
+t = 10; % [min] - recommended: between 10 and 30 min
+
+% Select the sampling time
+t_s = 0.1; % [min] - recommended: 0.1 min 
+
+% Select the set-point profile
+% 0 = constant set-point profile 
+% 1 = set-point profile 1
+% 2 = set-point profile 2
+type = 0; 
+
+% Select the control law:
+% 0 = open loop 
+% 1 = PID 
+control_law = 1;
+
+
+
+
+
+%% Please do not modify the lines below
+
+switch Mode
+   case 1
+      P_in = 4.0; % [bar]
+      T_in = 773.15; % [K]
+      ss = 2.27354e-4; % [mol/min]
+   case 2
+      P_in = 6.0; % [bar]
+      T_in = 823.15; % [K]
+      ss = 2.76379e-4; % [mol/min]
+   case 3
+      P_in = 8.0; % [bar]
+      T_in = 873.15; % [K]
+      ss = 5.81357e-4; % [mol/min]
+end
+
 switch initial_conditions
     case 0 
         ss_filename = ['Mode',num2str(Mode),'_np',num2str(np),'.mat'];
@@ -50,35 +72,17 @@ switch initial_conditions
 end
 load(ss_filename); 
 
-
-%%
-options = odeset('RelTol', 1e-4,'AbsTol', 1e-5,'MaxStep', 0.1,...
-    'NonNegative', 1:8*2*np); % Options for the Solver
-
-
-% Select the overall simulation time
-t = 10; % [min] - recommended: between 10 and 30 min
-
-% Select the sampling time
-t_s = 0.1; % [min] 
-
-% Select the set-point profile
-% 0 = constant set-point profile 
-% 1 = set-point profile 1
-% 2 = set-point profile 2
-type = 2; 
-
-% Select the control law:
-% 0 = open loop 
-% 1 = PID 
-control_law = 1;
-
 time = 0:t_s:t;
 y_output = zeros(size(time));
 u_output = zeros(size(time));
 y_sp = Profile(ss, time, t_s, type);
 
 p = Parameters(P_in, T_in, np, 0, 0);
+
+options = odeset('RelTol', 1e-4,'AbsTol', 1e-5,'MaxStep', 0.1,...
+    'NonNegative', 1:8*2*np); % Options for the Solver
+
+global F_H2
 
 switch control_law
    case 0
