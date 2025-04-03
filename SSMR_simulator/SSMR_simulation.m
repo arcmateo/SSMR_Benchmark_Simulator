@@ -6,14 +6,18 @@ addpath('ICFull','ICH2O');
 % Simulation setup ----------------------------------------------------
 
 % Select the number of points (spatial discretization): 50 or 200
+%FD: based on what conditions should the user decide 50 or 200? I'd suggest
+%to put this option in the "do not modify" section, since it can affect the
+%results a lot
 np = 50;
 
 % Select the normal operating conditions: Mode 1, 2 or 3
+%FD: I'd add a reference to the paper, or brief description here
 Mode = 1;
 
 % Select the disturbance scenario
-% 0 = Without disturbances
-% 1.1 = 10% step change in the inlet temperature
+% 0 = Normal operating conditions (no disturbances)
+% 1.1 = +10% step change in the inlet temperature
 % 1.2 = -10% step change in the inlet temperature
 % 2.1 = 20% step change in the inlet pressure
 % 2.2 = -20% step change in the inlet pressure
@@ -22,7 +26,8 @@ Mode = 1;
 Disturbance = 0; 
 
 % Select the initial conditions:
-% 0 = steady state, reactor contains all compounds
+% 0 = steady state, reactor contains all species 
+        %FD: refer to paper/figure/table/data to describe how the profile looks like
 % 1 = steady state, reactor contains only steam
 initial_conditions = 0; 
 
@@ -31,8 +36,10 @@ t = 10; % [min] - recommended: between 10 and 30 min
 
 % Select the sampling time
 t_s = 0.1; % [min] - recommended: 0.1 min 
+    %FD: consider moving to "do not modify"
 
-% Select the set-point profile
+% Select the set-point profile 
+    %FD: add references to show hos these profiles look like
 % 0 = constant set-point profile 
 % 1 = set-point profile 1
 % 2 = set-point profile 2
@@ -40,10 +47,22 @@ type = 0;
 
 % Select the control law:
 % 0 = open loop 
-% 1 = PID 
+% 1 = PID   %FD add reference to explain this control strategy. Explain that
+            % the user can implement a different control law and
+            % assign a different number
 control_law = 1;
-
-
+% 
+%         FD: you should proabbly move the control law to a separate function, so
+%         that the user can just modify that function for implementing a control
+%         law. Instead than having:
+% 
+%            switch control_law
+%                   case 0
+%               [...]
+%         
+%         you should directly call a function u_ss=control(control_law)
+%         also, consider renaming u <-- u_ss, since u_ss is not necessarily a
+%         steady-state, if I'm not mistaken
 
 
 
@@ -199,6 +218,7 @@ switch control_law
           x0c = x(end,:);
       end
       toc
+      
       figure;
       subplot(2,1,1);
       plot(time, y_output, 'b', 'LineWidth', 2.0);
@@ -218,4 +238,3 @@ switch control_law
       title('Control input',fontsize = 16);
       grid on
 end
-
