@@ -28,13 +28,14 @@ switch Mode
 end
 
 % Select the disturbance scenario
+% 0 = Without disturbances
 % 1.1 = 10% step change in the inlet temperature
 % 1.2 = -10% step change in the inlet temperature
 % 2.1 = 20% step change in the inlet pressure
 % 2.2 = -20% step change in the inlet pressure
 % 3 = Catalyst deactivation
 % 4 = Membrane fouling
-Disturbance = 3; 
+Disturbance = 0; 
 
 % Select the initial conditions:
 % 0 = steady state, reactor contains all compounds
@@ -70,7 +71,7 @@ type = 2;
 % Select the control law:
 % 0 = open loop 
 % 1 = PID 
-control_law = 0;
+control_law = 1;
 
 time = 0:t_s:t;
 y_output = zeros(size(time));
@@ -84,6 +85,8 @@ switch control_law
       tic
       for k = 1:length(time)
             switch Disturbance
+               case 0
+                  p = Parameters(P_in, T_in, np, 0, 0);
                case 1.1
                   d = 0;
                   if k*t_s >= 2.2
@@ -144,6 +147,36 @@ switch control_law
       prev_error = 0;
       tic
       for k = 1:length(time)
+            switch Disturbance
+               case 0
+                  p = Parameters(P_in, T_in, np, 0, 0);
+               case 1.1
+                  d = 0;
+                  if k*t_s >= 2.2
+                     p = Parameters(P_in, T_in*1.1, np, k*t_s, d); % Load the parameters
+                  end
+               case 1.2
+                  d = 0;
+                  if k*t_s >= 2.2
+                     p = Parameters(P_in, T_in*0.9, np, k*t_s, d); % Load the parameters 
+                  end
+               case 2.1
+                  d = 0;
+                  if k*t_s >= 2.2
+                     p = Parameters(P_in*1.2, T_in, np, k*t_s, d); % Load the parameters
+                  end
+               case 2.2
+                  d = 0;
+                  if k*t_s >= 2.2
+                     p = Parameters(P_in*0.8, T_in, np, k*t_s, d); % Load the parameters
+                  end
+               case 3
+                  d = 1;
+                  p = Parameters(P_in, T_in, np, k*t_s, d); % Load the parameters
+               case 4
+                  d = 2;
+                  p = Parameters(P_in, T_in, np, k*t_s, d); % Load the parameters
+            end
           u_output(k) = u_ss(1);
           [t,x] = ode15s(@(t,x)SSMR_function(t,x,u_ss,p), [0 t_s], x0c, options);
           y_output(k) = F_H2;
