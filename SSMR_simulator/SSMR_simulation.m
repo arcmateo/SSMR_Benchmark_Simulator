@@ -14,24 +14,32 @@ Mode = 1;
 
 switch Mode
    case 1
-   P_in = 4.0; % [bar]
-   T_in = 773.15; % [K]
-   ss = 2.27354e-4; % [mol/min]
+      P_in = 4.0; % [bar]
+      T_in = 773.15; % [K]
+      ss = 2.27354e-4; % [mol/min]
    case 2
-   P_in = 6.0; % [bar]
-   T_in = 823.15; % [K]
-   ss = 2.76379e-4; % [mol/min]
+      P_in = 6.0; % [bar]
+      T_in = 823.15; % [K]
+      ss = 2.76379e-4; % [mol/min]
    case 3
-   P_in = 8.0; % [bar]
-   T_in = 873.15; % [K]
-   ss = 5.81357e-4; % [mol/min]
+      P_in = 8.0; % [bar]
+      T_in = 873.15; % [K]
+      ss = 5.81357e-4; % [mol/min]
 end
+
+% Select the disturbance scenario
+% 1.1 = 10% step change in the inlet temperature
+% 1.2 = -10% step change in the inlet temperature
+% 2.1 = 20% step change in the inlet pressure
+% 2.2 = -20% step change in the inlet pressure
+
+Disturbance = 2.2; 
 
 p = Parameters(P_in, T_in, np); % Load the parameters 
 
 % Select the initial conditions:
-%   0 = steady state, reactor contains all compounds
-%   1 = steady state, reactor contains only steam
+% 0 = steady state, reactor contains all compounds
+% 1 = steady state, reactor contains only steam
 initial_conditions = 0; 
 
 switch initial_conditions
@@ -49,7 +57,7 @@ options = odeset('RelTol', 1e-4,'AbsTol', 1e-5,'MaxStep', 0.1,...
 
 
 % Select the overall simulation time
-t = 30; % [min] - recommended: between 10 and 30 min
+t = 4; % [min] - recommended: between 10 and 30 min
 
 % Select the sampling time
 t_s = 0.1; % [min] 
@@ -57,7 +65,7 @@ t_s = 0.1; % [min]
 % Select the control law:
 % 0 = open loop 
 % 1 = PID 
-control_law = 1;
+control_law = 0;
 
 % Select the set-point profile type
 % 1 = set-point profile 1
@@ -70,10 +78,21 @@ u_output = zeros(size(time));
 y_sp = Profile(ss, time, t_s, type);
 
 switch control_law
-
    case 0
       tic
       for k = 1:length(time)
+         if k*t_s >= 2.2
+            switch Disturbance
+               case 1.1
+                  p = Parameters(P_in, T_in*1.1, np); % Load the parameters 
+               case 1.2
+                  p = Parameters(P_in, T_in*0.9, np); % Load the parameters 
+               case 2.1
+                  p = Parameters(P_in*1.2, T_in, np); % Load the parameters 
+               case 2.2
+                  p = Parameters(P_in*0.8, T_in, np); % Load the parameters 
+            end
+         end
           [t,x] = ode15s(@(t,x)SSMR_function(t,x,u_ss,p), [0 t_s], x0c, options);
           y_output(k) = F_H2;
           u_output(k) = u_ss(1);
