@@ -2,14 +2,11 @@
 % Model in terms of Concentrations
 clear; close all; clc;
 global F_H2
-
 addpath('ICFull','ICH2O');
 
 %% Simulation setup
 
 % Select the number of points (spatial discretization): 50 or 200
-% FD: why only 50 or 200? make sure that it's explained in paper or
-% readme.md
 np = 50;
 
 % Select the normal operating conditions: Mode 1, 2 or 3
@@ -19,12 +16,15 @@ switch Mode
    case 1
    P_in = 4.0; % [bar]
    T_in = 773.15; % [K]
+   ss = 2.27354e-4; % [mol/min]
    case 2
    P_in = 6.0; % [bar]
    T_in = 823.15; % [K]
+   ss = 2.76379e-4; % [mol/min]
    case 3
    P_in = 8.0; % [bar]
    T_in = 873.15; % [K]
+   ss = 5.81357e-4; % [mol/min]
 end
 
 p = Parameters(P_in, T_in, np); % Load the parameters 
@@ -32,7 +32,7 @@ p = Parameters(P_in, T_in, np); % Load the parameters
 % Select the initial conditions:
 %   0 = steady state, reactor contains all compounds
 %   1 = steady state, reactor contains only steam
-initial_conditions = 1; 
+initial_conditions = 0; 
 
 switch initial_conditions
     case 0 
@@ -49,7 +49,7 @@ options = odeset('RelTol', 1e-4,'AbsTol', 1e-5,'MaxStep', 0.1,...
 
 
 % Select the overall simulation time
-t = 1; % [min] - recommended: between 10 and 30 min
+t = 30; % [min] - recommended: between 10 and 30 min
 
 % Select the sampling time
 t_s = 0.1; % [min] 
@@ -57,15 +57,20 @@ t_s = 0.1; % [min]
 % Select the control law:
 % 0 = open loop 
 % 1 = PID 
-control_law = 0;
+control_law = 1;
+
+% Select the set-point profile type
+% 1 = set-point profile 1
+% 2 = set-point profile 2
+type = 1;  
 
 time = 0:t_s:t;
 y_output = zeros(size(time));
 u_output = zeros(size(time));
-sp = 9.75e-4; % [mol/min]
-y_sp = Profile(sp, time, t_s);
+y_sp = Profile(ss, time, t_s, type);
 
 switch control_law
+
    case 0
       tic
       for k = 1:length(time)
@@ -75,18 +80,30 @@ switch control_law
           x0c = x(end,:);
       end
       toc
-      figure(1)
-      plot(time, y_output, 'b', 'LineWidth', 1.5);
-      xlabel('Time (min)'); 
-      ylabel('Pure hydrogen molar flow [mol/min]');
+      figure;
+      subplot(2,1,1);
+      plot(time, y_output, 'b', 'LineWidth', 2.0);
+      set(gca,'FontSize', 16)
+      hold on;
+      xlabel('Time (min)', fontsize = 16); 
+      ylabel('Pure H_{2} flow (mol/min)', fontsize = 16);
+      title('System response', fontsize = 16);
+      grid on  
+      subplot(2,1,2);
+      stairs(time, u_output, 'k', 'LineWidth', 2.0);
+      set(gca,'FontSize', 16)
+      xlabel('Time (min)', fontsize = 16); 
+      ylabel('Inlet ethanol flow (mol/min)', fontsize = 16);
+      title('Control input', fontsize = 16);
       grid on
+
    case 1
-      ku = 0.376;
+      ku = 0.1265;
       tao = 0.25;
       %Ziegler-Nichols method
-      kp = 2.1*(0.6*ku);
-      ki = 0.006*((1.2*ku)/tao);
-      kd = 0.001*(3*ku*tao)/40;
+      kp = 18*(0.6*ku);
+      ki = 0.01*((1.2*ku)/tao);
+      kd = (3*ku*tao)/40;
       integral_error = 0;
       prev_error = 0;
       tic
@@ -112,18 +129,20 @@ switch control_law
       figure;
       subplot(2,1,1);
       plot(time, y_output, 'b', 'LineWidth', 2.0);
+      set(gca,'FontSize', 16)
       hold on;
       stairs(time, y_sp, 'r--', 'LineWidth', 2.0);
-      xlabel('Time (min)'); 
-      ylabel('Pure H_{2} flow [mol/min]');
-      title('System response');
-      legend('Pure H2 molar flow', 'Set-point');
+      xlabel('Time (min)',fontsize = 16); 
+      ylabel('Pure H_{2} flow (mol/min)',fontsize = 16); 
+      title('System response',fontsize = 16);
+      legend('Pure H_{2} molar flow', 'Set-point',fontsize = 16);
       grid on  
       subplot(2,1,2);
       stairs(time, u_output, 'k', 'LineWidth', 2.0);
-      xlabel('Time (min)'); 
-      ylabel('Inlet Ethanol flow [mol/min]');
-      title('Control Input');
+      set(gca,'FontSize', 16)
+      xlabel('Time (min)',fontsize = 16);
+      ylabel('Inlet ethanol flow (mol/min)',fontsize = 16);
+      title('Control input',fontsize = 16);
       grid on
 end
 
