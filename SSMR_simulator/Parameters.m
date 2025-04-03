@@ -1,4 +1,4 @@
-function p = Parameters(P_in, T_in, np)
+function p = Parameters(P_in, T_in, np, t, d)
 
 % PARAMETERS ----------
 
@@ -22,10 +22,21 @@ p.Tref = 773.15; % [K] Reference temperature
 p.T_a = p.T_in; % [K] Furnace temperature
     
 p.Ea = [7.0e4, 1.30e5, 7.0e4, 9.8e4]; % [J/mol] Activation energy
-    
+   
 p.kinf = [2.1e4, 2.0e3, 1.9e4, 2.0e5]; % [mol/(m3-min-bar)]
 % Pre-exponential factor
-    
+
+p.pe0 = (2.25e-8)*60; % [mol / (min-Pa^1/2-m)] Pre-exponential factor
+
+switch d
+   case 0
+      p.kinf = p.kinf * 1.0;
+   case 1
+      p.kinf = p.kinf * exp(-0.01*t);
+   case 2
+      p.pe0  = p.pe0 * exp(-0.006*t);
+end
+
 p.deltaH_std = [64600, 49875, -41166, 109136]; % [J/mol] 
 % Standard enthalpy of reactions
 
@@ -50,8 +61,6 @@ p.L1 = p.L - p.L2; % [m] 1st stage length
 p.deltaz1 = p.L1 / p.np; % delta_z 1st stage
 
 p.deltaz2 = p.L2 / p.np; % delta_z 2nd stage
-
-p.pe0 = (2.25e-8)*60; % [mol / (min-Pa^1/2-m)] Pre-exponential factor
 
 p.Eam = 8.8e3; % [J/mol] "Activation energy" of membrane
 

@@ -32,10 +32,9 @@ end
 % 1.2 = -10% step change in the inlet temperature
 % 2.1 = 20% step change in the inlet pressure
 % 2.2 = -20% step change in the inlet pressure
-
-Disturbance = 2.2; 
-
-p = Parameters(P_in, T_in, np); % Load the parameters 
+% 3 = Catalyst deactivation
+% 4 = Membrane fouling
+Disturbance = 3; 
 
 % Select the initial conditions:
 % 0 = steady state, reactor contains all compounds
@@ -57,42 +56,61 @@ options = odeset('RelTol', 1e-4,'AbsTol', 1e-5,'MaxStep', 0.1,...
 
 
 % Select the overall simulation time
-t = 4; % [min] - recommended: between 10 and 30 min
+t = 10; % [min] - recommended: between 10 and 30 min
 
 % Select the sampling time
 t_s = 0.1; % [min] 
+
+% Select the set-point profile
+% 0 = constant set-point profile 
+% 1 = set-point profile 1
+% 2 = set-point profile 2
+type = 2; 
 
 % Select the control law:
 % 0 = open loop 
 % 1 = PID 
 control_law = 0;
 
-% Select the set-point profile type
-% 1 = set-point profile 1
-% 2 = set-point profile 2
-type = 1;  
-
 time = 0:t_s:t;
 y_output = zeros(size(time));
 u_output = zeros(size(time));
 y_sp = Profile(ss, time, t_s, type);
 
+p = Parameters(P_in, T_in, np, 0, 0);
+
 switch control_law
    case 0
       tic
       for k = 1:length(time)
-         if k*t_s >= 2.2
             switch Disturbance
                case 1.1
-                  p = Parameters(P_in, T_in*1.1, np); % Load the parameters 
+                  d = 0;
+                  if k*t_s >= 2.2
+                     p = Parameters(P_in, T_in*1.1, np, k*t_s, d); % Load the parameters
+                  end
                case 1.2
-                  p = Parameters(P_in, T_in*0.9, np); % Load the parameters 
+                  d = 0;
+                  if k*t_s >= 2.2
+                     p = Parameters(P_in, T_in*0.9, np, k*t_s, d); % Load the parameters 
+                  end
                case 2.1
-                  p = Parameters(P_in*1.2, T_in, np); % Load the parameters 
+                  d = 0;
+                  if k*t_s >= 2.2
+                     p = Parameters(P_in*1.2, T_in, np, k*t_s, d); % Load the parameters
+                  end
                case 2.2
-                  p = Parameters(P_in*0.8, T_in, np); % Load the parameters 
+                  d = 0;
+                  if k*t_s >= 2.2
+                     p = Parameters(P_in*0.8, T_in, np, k*t_s, d); % Load the parameters
+                  end
+               case 3
+                  d = 1;
+                  p = Parameters(P_in, T_in, np, k*t_s, d); % Load the parameters
+               case 4
+                  d = 2;
+                  p = Parameters(P_in, T_in, np, k*t_s, d); % Load the parameters
             end
-         end
           [t,x] = ode15s(@(t,x)SSMR_function(t,x,u_ss,p), [0 t_s], x0c, options);
           y_output(k) = F_H2;
           u_output(k) = u_ss(1);
@@ -115,7 +133,6 @@ switch control_law
       ylabel('Inlet ethanol flow (mol/min)', fontsize = 16);
       title('Control input', fontsize = 16);
       grid on
-
    case 1
       ku = 0.1265;
       tao = 0.25;

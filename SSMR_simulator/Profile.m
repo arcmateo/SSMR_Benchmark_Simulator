@@ -4,6 +4,9 @@ y_sp = ones(size(time))*ss;
 
 switch type
 
+   case 0
+      y_sp = ones(size(time))*ss;
+
    case 1
       for k = 1:length(time)
          t = k*t_s;
