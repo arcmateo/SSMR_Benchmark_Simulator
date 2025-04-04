@@ -1,2 +1,19 @@
-# ESR model 
-Baseline simulation code for the Ethanol Steam Reformer as starting point for the null-space analysis. The code includes two models: one based on concentrations and the other based on flows.
+# A Benchmark Simulator for Advanced Control of Ethanol Steam Reforming
+
+### Installation
+
+0. 
+
+1. 
+
+### Instructions
+
+1. Specify simulation conditions in SSMR_simulator/SSMR_simulation.m 
+
+2. Run SSMR_simulator/SSMR_simulation.m 
+
+### Run case studies
+
+1.
+
+2.
