@@ -5,10 +5,8 @@ addpath('ICFull','ICH2O');
 
 % Simulation setup ----------------------------------------------------
 
-% Select the number of points (spatial discretization): 50 or 200
-np = 50;
-
 % Select the normal operating conditions: Mode 1, 2 or 3
+% (See Table 2 in the paper)
 Mode = 1;
 
 % Select the disturbance scenario
@@ -22,6 +20,7 @@ Mode = 1;
 Disturbance = 0; 
 
 % Select the initial conditions:
+% (See more details in the supplementary material)
 % 0 = steady state, reactor contains all compounds
 % 1 = steady state, reactor contains only steam
 initial_conditions = 0; 
@@ -29,25 +28,35 @@ initial_conditions = 0;
 % Select the overall simulation time
 t = 10; % [min] - recommended: between 10 and 30 min
 
-% Select the sampling time
-t_s = 0.1; % [min] - recommended: 0.1 min 
-
 % Select the set-point profile
+% (See Fig. 4 in the paper)
 % 0 = constant set-point profile 
 % 1 = set-point profile 1
 % 2 = set-point profile 2
 type = 0; 
 
-% Select the control law:
+% Select the simulation type:
 % 0 = open loop 
-% 1 = PID 
-control_law = 1;
+% 1 = control
+simulation_type = 1;
 
-
-
+% If you selected "control" in the options above, specify the control law to 
+% be implemented
+% 0 = PID (See Sections 5 and 6 in the paper)
+% 1 = [...]
+% 2 = [...]
+% Here, users can implement their own control laws by adding a new number
+% that corresponds to their control law defined in the control.m file
+control_law = 0;
 
 
 %% Please do not modify the lines below
+
+% Number of points (spatial discretization): 50 or 200
+np = 50;
+
+% Sampling time
+t_s = 0.1; % [min] - recommended: 0.1 min
 
 switch Mode
    case 1
@@ -84,7 +93,7 @@ options = odeset('RelTol', 1e-4,'AbsTol', 1e-5,'MaxStep', 0.1,...
 
 global F_H2
 
-switch control_law
+switch simulation_type
    case 0
       tic
       for k = 1:length(time)
