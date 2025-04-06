@@ -7,7 +7,7 @@ addpath('ICFull','ICH2O');
 
 % Select the normal operating conditions: Mode 1, 2 or 3
 % (See Table 2 in the paper)
-Mode = 1;
+Mode = 3;
 
 % Select the disturbance scenario
 % 0 = Without disturbances
@@ -26,14 +26,14 @@ Disturbance = 0;
 initial_conditions = 0; 
 
 % Select the overall simulation time
-t = 10; % [min] - recommended: between 10 and 30 min
+t = 30; % [min] - recommended: between 10 and 30 min
 
 % Select the set-point profile
 % (See Fig. 4 in the paper)
 % 0 = constant set-point profile 
 % 1 = set-point profile 1
 % 2 = set-point profile 2
-type = 0; 
+type = 2; 
 
 % Select the simulation type:
 % 0 = open loop 
@@ -48,6 +48,13 @@ simulation_type = 1;
 % Here, users can implement their own control laws by adding a new number
 % that corresponds to their control law defined in the control.m file
 control_law = 0;
+
+
+
+
+
+
+
 
 
 %% Please do not modify the lines below
@@ -84,7 +91,7 @@ load(ss_filename);
 time = 0:t_s:t;
 y_output = zeros(size(time));
 u_output = zeros(size(time));
-y_sp = Profile(ss, time, t_s, type);
+y_sp = Profile(ss, time, t_s, type, Mode);
 
 p = Parameters(P_in, T_in, np, 0, 0);
 
