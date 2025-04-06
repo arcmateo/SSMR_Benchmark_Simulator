@@ -17,7 +17,10 @@ Mode = 1;
 % 2.2 = -20% step change in the inlet pressure
 % 3 = Catalyst deactivation
 % 4 = Membrane fouling
-Disturbance = 0; 
+Disturbance = 2.2; 
+
+% Specify the time at which the disturbance is to be applied (min)
+Dist_time = 10;
 
 % Select the initial conditions:
 % (See more details in the supplementary material)
@@ -26,19 +29,19 @@ Disturbance = 0;
 initial_conditions = 0; 
 
 % Select the overall simulation time
-t = 30; % [min] - recommended: between 10 and 30 min
+t = 20; % [min] - recommended: between 10 and 30 min
 
 % Select the set-point profile
 % (See Fig. 4 in the paper)
 % 0 = constant set-point profile 
 % 1 = set-point profile 1
 % 2 = set-point profile 2
-type = 1; 
+type = 0; 
 
 % Select the simulation type:
 % 0 = open loop 
 % 1 = control
-simulation_type = 1;
+simulation_type = 0;
 
 % If you selected "control" in the options above, specify the control law to 
 % be implemented
@@ -48,9 +51,6 @@ simulation_type = 1;
 % Here, users can implement their own control laws by adding a new number
 % that corresponds to their control law defined in the control.m file
 control_law = 0;
-
-
-
 
 
 
@@ -87,6 +87,7 @@ switch initial_conditions
         ss_filename = ['Mode',num2str(Mode),'_np',num2str(np),'_H2O','.mat'];
 end
 load(ss_filename); 
+u = u_ss; 
 
 time = 0:t_s:t;
 y_output = zeros(size(time));
@@ -109,22 +110,22 @@ switch simulation_type
                   p = Parameters(P_in, T_in, np, 0, 0);
                case 1.1
                   d = 0;
-                  if k*t_s >= 2.2
+                  if k*t_s >= Dist_time + 0.2
                      p = Parameters(P_in, T_in*1.1, np, k*t_s, d); % Load the parameters
                   end
                case 1.2
                   d = 0;
-                  if k*t_s >= 2.2
+                  if k*t_s >= Dist_time + 0.2
                      p = Parameters(P_in, T_in*0.9, np, k*t_s, d); % Load the parameters 
                   end
                case 2.1
                   d = 0;
-                  if k*t_s >= 2.2
+                  if k*t_s >= Dist_time + 0.2
                      p = Parameters(P_in*1.2, T_in, np, k*t_s, d); % Load the parameters
                   end
                case 2.2
                   d = 0;
-                  if k*t_s >= 2.2
+                  if k*t_s >= Dist_time + 0.2
                      p = Parameters(P_in*0.8, T_in, np, k*t_s, d); % Load the parameters
                   end
                case 3
@@ -134,9 +135,9 @@ switch simulation_type
                   d = 2;
                   p = Parameters(P_in, T_in, np, k*t_s, d); % Load the parameters
             end
-          [t,x] = ode15s(@(t,x)SSMR_function(t,x,u_ss,p), [0 t_s], x0c, options);
+          [t,x] = ode15s(@(t,x)SSMR_function(t,x,u,p), [0 t_s], x0c, options);
           y_output(k) = F_H2;
-          u_output(k) = u_ss(1);
+          u_output(k) = u(1);
           x0c = x(end,:);
       end
       toc
@@ -166,22 +167,22 @@ switch simulation_type
                   p = Parameters(P_in, T_in, np, 0, 0);
                case 1.1
                   d = 0;
-                  if k*t_s >= 2.2
+                  if k*t_s >= Dist_time + 0.2
                      p = Parameters(P_in, T_in*1.1, np, k*t_s, d); % Load the parameters
                   end
                case 1.2
                   d = 0;
-                  if k*t_s >= 2.2
+                  if k*t_s >= Dist_time + 0.2
                      p = Parameters(P_in, T_in*0.9, np, k*t_s, d); % Load the parameters 
                   end
                case 2.1
                   d = 0;
-                  if k*t_s >= 2.2
+                  if k*t_s >= Dist_time + 0.2
                      p = Parameters(P_in*1.2, T_in, np, k*t_s, d); % Load the parameters
                   end
                case 2.2
                   d = 0;
-                  if k*t_s >= 2.2
+                  if k*t_s >= Dist_time + 0.2
                      p = Parameters(P_in*0.8, T_in, np, k*t_s, d); % Load the parameters
                   end
                case 3
@@ -191,15 +192,15 @@ switch simulation_type
                   d = 2;
                   p = Parameters(P_in, T_in, np, k*t_s, d); % Load the parameters
             end
-          u_output(k) = u_ss(1);
-          [t,x] = ode15s(@(t,x)SSMR_function(t,x,u_ss,p), [0 t_s], x0c, options);
+          u_output(k) = u(1);
+          [t,x] = ode15s(@(t,x)SSMR_function(t,x,u,p), [0 t_s], x0c, options);
           y_output(k) = F_H2;
-          u_ss(1) = u_ss(1) + control(control_law, t_s, y_output(k), y_sp(k));
-          if u_ss(1) <= 0.0018
-             u_ss(1) = 0.0018;
+          u(1) = u(1) + control(control_law, t_s, y_output(k), y_sp(k));
+          if u(1) <= 0.0018
+             u(1) = 0.0018;
           end
-          if u_ss(1) >= 0.0024
-             u_ss(1) = 0.0024;
+          if u(1) >= 0.0024
+             u(1) = 0.0024;
           end
           x0c = x(end,:);
       end
