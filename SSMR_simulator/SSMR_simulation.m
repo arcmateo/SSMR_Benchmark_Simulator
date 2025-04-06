@@ -7,7 +7,7 @@ addpath('ICFull','ICH2O');
 
 % Select the normal operating conditions: Mode 1, 2 or 3
 % (See Table 2 in the paper)
-Mode = 3;
+Mode = 1;
 
 % Select the disturbance scenario
 % 0 = Without disturbances
@@ -33,7 +33,7 @@ t = 30; % [min] - recommended: between 10 and 30 min
 % 0 = constant set-point profile 
 % 1 = set-point profile 1
 % 2 = set-point profile 2
-type = 2; 
+type = 1; 
 
 % Select the simulation type:
 % 0 = open loop 
@@ -156,15 +156,9 @@ switch simulation_type
       ylabel('Inlet ethanol flow (mol/min)', fontsize = 16);
       title('Control input', fontsize = 16);
       grid on
+
    case 1
-      ku = 0.1265;
-      tao = 0.25;
-      %Ziegler-Nichols method
-      kp = 18*(0.6*ku);
-      ki = 0.01*((1.2*ku)/tao);
-      kd = (3*ku*tao)/40;
-      integral_error = 0;
-      prev_error = 0;
+
       tic
       for k = 1:length(time)
             switch Disturbance
@@ -200,18 +194,13 @@ switch simulation_type
           u_output(k) = u_ss(1);
           [t,x] = ode15s(@(t,x)SSMR_function(t,x,u_ss,p), [0 t_s], x0c, options);
           y_output(k) = F_H2;
-          error = y_sp(k) - y_output(k);
-          integral_error = integral_error + error*t_s;
-          derivative_error = (error - prev_error)/t_s;
-          deltau = kp*error + ki*integral_error + kd*derivative_error;
-          u_ss(1) = u_ss(1) + deltau;
+          u_ss(1) = u_ss(1) + control(control_law, t_s, y_output(k), y_sp(k));
           if u_ss(1) <= 0.0018
              u_ss(1) = 0.0018;
           end
           if u_ss(1) >= 0.0024
              u_ss(1) = 0.0024;
           end
-          prev_error = error;
           x0c = x(end,:);
       end
       toc
@@ -234,4 +223,3 @@ switch simulation_type
       title('Control input',fontsize = 16);
       grid on
 end
-
