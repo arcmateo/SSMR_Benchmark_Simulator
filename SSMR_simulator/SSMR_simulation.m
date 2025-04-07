@@ -19,8 +19,8 @@ Mode = 1;
 % 4 = Membrane fouling
 Disturbance = 2.2; 
 
-% Specify the time at which the disturbance is to be applied (min)
-Dist_time = 10;
+% Specify the time at which the disturbance is to be applied (if any)
+Dist_time = 10; % [min]
 
 % Select the initial conditions:
 % (See more details in the supplementary material)
