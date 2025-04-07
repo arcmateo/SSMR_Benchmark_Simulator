@@ -3,10 +3,14 @@ This repository contains the benchmark simulator for a staged-separation membran
 
 ### Installation
 
-1. Download the ZIP folder from the GitHub repository 
+1. Download the ZIP folder from the GitHub repository
+   
 2. Extract the contents to a folder of your choice
+   
 3. Launch MATLAB R2020a or later (recommended). Additional toolboxes are not necessary
+   
 4. Set the extracted folder as the current folder in MATLAB
+   
 5. Open the main simulation script: SSMR_simulator/SSMR_simulation.m
 
 ### Instructions
@@ -26,7 +30,7 @@ This repository contains the benchmark simulator for a staged-separation membran
 4. To modify or implement custom controllers, open control.m
 5. In control.m, create a new case inside the switch environment
 6. Design your own control law that outputs the changes to the input variable
-7. In SSMR_simulation.m, change the value of the control_law according to the number assigned to your case
+7. In SSMR_simulation.m, change the value of control_law according to the number assigned to your case
 8. Customize the benchmark to include multiple input variables if desired
 
 ### Run case studies
