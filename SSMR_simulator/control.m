@@ -3,7 +3,6 @@ function deltau = control(control_law, t_s, y_output, y_sp)
 persistent integral_error
 persistent prev_error
 
-
 switch control_law
 
    case 0 % PID control
