@@ -34,6 +34,7 @@ This repository contains the benchmark simulator for a staged-separation membran
    
    * Mode 1
    * Disturbance = 0
+   * Time for disturbance (min) = any (since it does not apply here) 
    * Initial conditions = 0
    * Simulation time (min) = 30
    * Set-point profile = 1
