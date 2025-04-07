@@ -25,8 +25,9 @@ This repository contains the benchmark simulator for a staged-separation membran
 3. The simulation results will be displayed in plots that appear on the screen
 4. To modify or implement custom controllers, open control.m
 5. In control.m, create a new case inside the switch environment
-6. Design your own control law that outputs changes to the input variable
-7. Customize the benchmark to include multiple input variables if desired
+6. Design your own control law that outputs the changes to the input variable
+7. In SSMR_simulation.m, change the value of the control_law according to the number assigned to your case
+8. Customize the benchmark to include multiple input variables if desired
 
 ### Run case studies
 
@@ -39,7 +40,7 @@ This repository contains the benchmark simulator for a staged-separation membran
    * Simulation time (min) = 30
    * Set-point profile = 1
    * Simulation type = 1
-   * Control_law = 0;
+   * Control_law = 0
    
 2. PID controller to address control challenge 3
 
@@ -50,5 +51,5 @@ This repository contains the benchmark simulator for a staged-separation membran
    * Simulation time (min) = 10
    * Set-point profile = 0
    * Simulation type = 1
-   * Control_law = 0;
+   * Control_law = 0
    
