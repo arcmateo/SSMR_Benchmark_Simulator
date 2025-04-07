@@ -19,7 +19,9 @@ This repository contains the benchmark simulator for a staged-separation membran
    * Select the overall simulation time
    * Select the set-point profile (see Fig. 4 in the paper)
    * Select the simulation type (open loop or with control)
-2. Run SSMR_simulator/SSMR_simulation.m 
+2. Run SSMR_simulator/SSMR_simulation.m
+3. The simulation results will be displayed in plots that appear on the screen
+4. To modify or implement custom controllers, open control.m
 
 ### Run case studies
 
