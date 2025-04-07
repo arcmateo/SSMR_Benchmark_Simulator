@@ -31,8 +31,23 @@ This repository contains the benchmark simulator for a staged-separation membran
 ### Run case studies
 
 1. PID controller to address control challenge 1
-   Simulation conditions
-   * 
    
+   * Mode 1
+   * Disturbance = 0
+   * Initial conditions = 0
+   * Simulation time (min) = 30
+   * Set-point profile = 1
+   * Simulation type = 1
+   * Control_law = 0;
+   
+2. PID controller to address control challenge 3
 
-3. PID controller to address control challenge 3
+   * Mode 2
+   * Disturbance = 1.1 or 2.2
+   * Time for disturbance (min) = 5
+   * Initial conditions = 1
+   * Simulation time (min) = 10
+   * Set-point profile = 0
+   * Simulation type = 1
+   * Control_law = 0;
+   
