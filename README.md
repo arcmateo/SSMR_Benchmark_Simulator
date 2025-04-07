@@ -11,14 +11,14 @@ This repository contains the benchmark simulator for a staged-separation membran
 
 ### Instructions
 
-1. Specify simulation conditions in SSMR_simulator/SSMR_simulation.m \\
-    * Select the normal operating conditions: Mode 1, 2 or 3 (see Table 2 in the paper)
-   1.2 Select the disturbance scenario (see subsection 4.2 in the paper)
-   1.3 Specify the time at which the disturbance is to be applied (if any)
-   1.4 Select the initial conditions (see more details in the supplementary material)
-   1.5 Select the overall simulation time
-   1.6 Select the set-point profile (see Fig. 4 in the paper)
-   1.7 Select the simulation type (open loop or with control)
+1. Specify simulation conditions in SSMR_simulator/SSMR_simulation.m
+   * Select the normal operating conditions: Mode 1, 2 or 3 (see Table 2 in the paper)
+   * Select the disturbance scenario (see subsection 4.2 in the paper)
+   * Specify the time at which the disturbance is to be applied (if any)
+   * Select the initial conditions (see more details in the supplementary material)
+   * Select the overall simulation time
+   * Select the set-point profile (see Fig. 4 in the paper)
+   * Select the simulation type (open loop or with control)
 2. Run SSMR_simulator/SSMR_simulation.m 
 
 ### Run case studies
