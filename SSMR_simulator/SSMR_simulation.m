@@ -7,7 +7,7 @@ addpath('ICFull','ICH2O');
 
 % Select the normal operating conditions: Mode 1, 2 or 3
 % (See Table 2 in the paper)
-Mode = 1;
+Mode = 2;
 
 % Select the disturbance scenario
 % 0 = Without disturbances
@@ -20,28 +20,28 @@ Mode = 1;
 Disturbance = 2.2; 
 
 % Specify the time at which the disturbance is to be applied (if any)
-Dist_time = 10; % [min]
+Dist_time = 5; % [min]
 
 % Select the initial conditions:
 % (See more details in the supplementary material)
 % 0 = steady state, reactor contains all compounds
 % 1 = steady state, reactor contains only steam
-initial_conditions = 0; 
+initial_conditions = 1; 
 
 % Select the overall simulation time
-t = 20; % [min] - recommended: between 10 and 30 min
+t = 10; % [min] - recommended: between 10 and 30 min
 
 % Select the set-point profile
 % (See Fig. 4 in the paper)
 % 0 = constant set-point profile 
 % 1 = set-point profile 1
 % 2 = set-point profile 2
-type = 0; 
+setpoint_profile = 0; 
 
 % Select the simulation type:
 % 0 = open loop 
 % 1 = control
-simulation_type = 0;
+simulation_type = 1;
 
 % If you selected "control" in the options above, specify the control law to 
 % be implemented
@@ -92,7 +92,7 @@ u = u_ss;
 time = 0:t_s:t;
 y_output = zeros(size(time));
 u_output = zeros(size(time));
-y_sp = Profile(ss, time, t_s, type, Mode);
+y_sp = Profile(ss, time, t_s, setpoint_profile, Mode);
 
 p = Parameters(P_in, T_in, np, 0, 0);
 

@@ -1,8 +1,8 @@
-function y_sp = Profile(ss, time, t_s, type, Mode)
+function y_sp = Profile(ss, time, t_s, setpoint_profile, Mode)
 
 y_sp = ones(size(time))*ss;
 
-switch type
+switch setpoint_profile
 
    case 0
       y_sp = ones(size(time))*ss;
