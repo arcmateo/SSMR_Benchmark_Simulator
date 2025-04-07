@@ -39,7 +39,7 @@ This repository contains the benchmark simulator for a staged-separation membran
    * Simulation time (min) = 30
    * Set-point profile = 1
    * Simulation type = 1
-   * Control_law = 0;
+   * Control_law = 0
    
 2. PID controller to address control challenge 3
 
@@ -50,5 +50,5 @@ This repository contains the benchmark simulator for a staged-separation membran
    * Simulation time (min) = 10
    * Set-point profile = 0
    * Simulation type = 1
-   * Control_law = 0;
+   * Control_law = 0
    
