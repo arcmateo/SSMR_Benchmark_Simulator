@@ -7,7 +7,7 @@ This repository contains the benchmark simulator for a staged-separation membran
 2. Extract the contents to a folder of your choice
 3. Launch MATLAB R2020a or later (recommended). Additional toolboxes are not necessary
 4. Set the extracted folder as the current folder in MATLAB
-5. Open the main simulation script: SSMR_simulation.m 
+5. Open the main simulation script: SSMR_simulator/SSMR_simulation.m
 
 ### Instructions
 
@@ -30,6 +30,9 @@ This repository contains the benchmark simulator for a staged-separation membran
 
 ### Run case studies
 
-1.
+1. PID controller to address control challenge 1
+   Simulation conditions
+   * 
+   
 
-2.
+3. PID controller to address control challenge 3
