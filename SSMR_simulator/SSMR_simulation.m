@@ -7,7 +7,7 @@ addpath('ICFull','ICH2O');
 
 % Select the normal operating conditions: Mode 1, 2 or 3
 % (See Table 2 in the paper)
-Mode = 2;
+Mode = 1;
 
 % Select the disturbance scenario
 % 0 = Without disturbances
@@ -17,26 +17,26 @@ Mode = 2;
 % 2.2 = -20% step change in the inlet pressure
 % 3 = Catalyst deactivation
 % 4 = Membrane fouling
-Disturbance = 2.2; 
+Disturbance = 0; 
 
 % Specify the time at which the disturbance is to be applied (if any)
-Dist_time = 5; % [min]
+Dist_time = 30; % [min]
 
 % Select the initial conditions:
 % (See more details in the supplementary material)
 % 0 = steady state, reactor contains all compounds
 % 1 = steady state, reactor contains only steam
-initial_conditions = 1; 
+initial_conditions = 0; 
 
 % Select the overall simulation time
-t = 10; % [min] - recommended: between 10 and 30 min
+t = 30; % [min] - recommended: between 10 and 30 min
 
 % Select the set-point profile
 % (See Fig. 4 in the paper)
 % 0 = constant set-point profile 
 % 1 = set-point profile 1
 % 2 = set-point profile 2
-setpoint_profile = 0; 
+setpoint_profile = 1; 
 
 % Select the simulation type:
 % 0 = open loop 
