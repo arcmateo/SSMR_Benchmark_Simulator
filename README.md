@@ -12,16 +12,21 @@ This repository contains the benchmark simulator for a staged-separation membran
 ### Instructions
 
 1. Specify simulation conditions in SSMR_simulator/SSMR_simulation.m
+   
    * Select the normal operating conditions: Mode 1, 2 or 3 (see Table 2 in the paper)
    * Select the disturbance scenario (see subsection 4.2 in the paper)
    * Specify the time at which the disturbance is to be applied (if any)
-   * Select the initial conditions (see more details in the supplementary material)
-   * Select the overall simulation time
+   * Choose the initial conditions (see more details in the supplementary material)
+   * Specify the overall simulation time
    * Select the set-point profile (see Fig. 4 in the paper)
-   * Select the simulation type (open loop or with control)
+   * Choose the simulation type (open loop or with control)
+     
 2. Run SSMR_simulator/SSMR_simulation.m
 3. The simulation results will be displayed in plots that appear on the screen
 4. To modify or implement custom controllers, open control.m
+5. In control.m, create a new case inside the switch environment
+6. Design your own control law that outputs changes to the input variable
+7. Customize the benchmark to include multiple input variables if desired
 
 ### Run case studies
 
