@@ -20,7 +20,7 @@ Mode = 1;
 Disturbance = 0; 
 
 % Specify the time at which the disturbance is to be applied (if any)
-Dist_time = 30; % [min]
+Dist_time = 1; % [min]
 
 % Select the initial conditions:
 % (See more details in the supplementary material)
@@ -29,7 +29,7 @@ Dist_time = 30; % [min]
 initial_conditions = 0; 
 
 % Select the overall simulation time
-t = 30; % [min] - recommended: between 10 and 30 min
+t = 4; % [min] - recommended: between 10 and 30 min
 
 % Select the set-point profile
 % (See Fig. 4 in the paper)
@@ -41,7 +41,7 @@ setpoint_profile = 1;
 % Select the simulation type:
 % 0 = open loop 
 % 1 = control
-simulation_type = 1;
+simulation_type = 0;
 
 % If you selected "control" in the options above, specify the control law to 
 % be implemented
@@ -155,6 +155,7 @@ switch simulation_type
       set(gca,'FontSize', 16)
       xlabel('Time (min)', fontsize = 16); 
       ylabel('Inlet ethanol flow (mol/min)', fontsize = 16);
+      ylim([0.0017, 0.0025]);
       title('Control input', fontsize = 16);
       grid on
 
