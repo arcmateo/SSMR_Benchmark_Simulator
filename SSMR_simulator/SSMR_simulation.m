@@ -39,8 +39,8 @@ t = 4; % [min] - recommended: between 10 and 30 min
 setpoint_profile = 1; 
 
 % Select the simulation type:
-% 0 = open loop 
-% 1 = control
+% 0 = open-loop 
+% 1 = closed-loop
 simulation_type = 0;
 
 % If you selected "control" in the options above, specify the control law to 
